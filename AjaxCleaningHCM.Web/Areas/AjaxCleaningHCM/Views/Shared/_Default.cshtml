@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title> @ViewData["Title"] </title>
+    <partial name="_Styles" />
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <partial name="_TopNavigation" />
+        <partial name="_MainNavigation" />
+
+        <div class="content-wrapper">
+            <div class="content mt-3">
+                <div class="container-fluid">
+                    <div class="row">
+                      @*   <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
+                            <a class="btn btn-primary btn-block margin-bottom" href="/AjaxCleaningHCM/@ViewData["ControllerName"]/Create"><i class="fa fa-cubes"></i> <span>New @ViewData["ControllerName"]</span></a>
+                            <div class="card mt-4">
+                                <div class="card-header">
+                                    <strong>Stock In</strong>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush ">
+
+                                        <li class="list-group-item pt-0 mt-0"><a href="/PurchaseOrder"><i class="fas fa-check-circle text-red"></i> Purchase</a></li>
+                                        <li class="list-group-item"><a href="/Receiving"><i class="fas fa-check-circle text-yellow"></i> Receiving</a></li>
+                                        <li class="list-group-item"><a href="/TransferOrder"><i class="fas fa-check-circle text-light-blue"></i> Transfer Order</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <strong>Stock Out</strong>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush ">
+
+                                        <li class="list-group-item pt-0 mt-0"><a href="/SalesOrder"><i class="fas fa-check-circle text-red"></i> Sales</a></li>
+                                        <li class="list-group-item"><a href="/Shipment"><i class="fas fa-check-circle text-yellow"></i> Shipment</a></li>
+                                        <li class="list-group-item"><a href="/TransferOrder"><i class="fas fa-check-circle text-light-blue"></i> Transfer Order</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div> *@
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div class="card" style="border-top: 5px solid #1b6ec2;">
+                                <div class="card-header">
+                                    @if(ViewData["ActionName"]?.ToString() != "Index")
+                                    {     
+                                        <a href="/AjaxCleaningHCM/@ViewData["ControllerName"]/Index"><i class="fas fa-arrow-left"></i> Back to List</a>
+                                    }
+                                    else
+                                    {
+                                        <label>@ViewData["ControllerName"] List</label>
+                                    }
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+
+                                    </div>
+                                   
+                                </div>
+                                <div class="card-body">
+                                    @if (ViewData["ActionName"]?.ToString() == "Index")
+                                    {
+                                        <a class="btn btn-success mb-2" href="/AjaxCleaningHCM/@ViewData["ControllerName"]/Create"><i class="fa fa-plus"></i>  Create New</a>
+                                        <br />
+                                    }
+                                   
+                                    @RenderBody()
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="_Footer" />
+    </div>
+
+    <partial name="_Scripts" />
+
+    @RenderSection("Scripts", required: false)
+    <script>
+        $(document).ready(function () {
+            $('#table').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "iDisplayLength": 8,
+                "filtering": true,
+                "pageLength": 10,
+                dom: 'Bfrtip',
+                buttons: [
+                    'excel', 'pdf', 'print'
+                ]
+            });
+        });
+        @if (ViewBag.SuccessAlertMessage != null)
+        {
+            <text>
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: '@ViewBag.SuccessAlertMessage',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            </text>
+            ViewBag.SuccessAlertMessage = null;
+        }
+        @if (ViewBag.FailureAlertMessage != null)
+        {
+            <text>
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: '@ViewBag.FailureAlertMessage',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            </text>
+            ViewBag.FailureAlertMessage = null;
+        }
+    </script>
+  
+</body>
+</html>
+

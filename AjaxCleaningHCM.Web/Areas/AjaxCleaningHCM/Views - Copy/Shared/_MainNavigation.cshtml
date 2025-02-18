@@ -1,0 +1,147 @@
+﻿@using AjaxCleaningHCM.Infrastructure.Data;
+@using Microsoft.AspNetCore.Identity
+@using AjaxCleaningHCM.Core.UserManagment.Identity
+@using Microsoft.EntityFrameworkCore
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@inject ApplicationDbContext context
+
+@{
+    var userEmail = string.Empty;
+    if (SignInManager.IsSignedIn(User))
+    {
+        userEmail = User.Identity.Name;
+    }
+    else
+    {
+        userEmail = "None";
+    }
+}
+
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a asp-area="Main" asp-controller="Main" asp-action="Index" class="brand-link">
+        <img src="~/img/logo.png" alt="ET Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light"><strong>INVENTORY</strong></span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="~/img/noimage.jpg" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="#" class="d-block">@userEmail</a>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-file"></i>
+                        <p>
+                            Account Management
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="AccountManagement"
+                               asp-controller="Account"
+                               asp-action="Index"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Users</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a asp-area="AccountManagement"
+                               asp-controller="Roles"
+                               asp-action="Index"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Roles</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a asp-area="AccountManagement"
+                               asp-controller="Privileges"
+                               asp-action="Index"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Privileges</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a asp-area="AccountManagement"
+                               asp-controller="Account"
+                               asp-action="ResetPassword"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Reset Password</p>
+                            </a>
+                        </li>
+                    </ul>
+
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-file"></i>
+                        <p>
+                            Master Data
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="AccountManagement"
+                               asp-controller="Account"
+                               asp-action="Index"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Product</p>
+                            </a>
+                        </li>
+
+                       
+
+                    </ul>
+
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-file"></i>
+                        <p>
+                            Operational
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-area="AjaxCleaningHCM"
+                               asp-controller="Customer"
+                               asp-action="Index"
+                               class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Product</p>
+                            </a>
+                        </li>
+                        
+                    </ul>
+
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

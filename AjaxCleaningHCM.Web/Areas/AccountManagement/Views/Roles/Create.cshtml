@@ -1,0 +1,143 @@
+﻿@model AjaxCleaningHCM.Domain.ViewModels.RoleViewModel
+
+@{
+    ViewData["Title"] = "Create";
+
+    ViewData["ControllerName"] = "Roles";
+    ViewData["ActionName"] = "Create";
+    string btnValue = string.Empty;
+}
+<!-- Default box -->
+<div class="card">
+    <div class="card-header">
+        <a class="box-title col-md-2" asp-action="Index"><i class="fa fa-arrow-left text-green"></i>  Back to List </a>
+
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="RoleName" class="control-label"></label>
+                        <input asp-for="RoleName" placeholder="Role name" class="form-control" />
+                        <span asp-validation-for="RoleName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" placeholder="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label(null, "Privileges", new { @class = "control-label" })
+                        <input type="text" id="searchPrivilege" onkeyup="searchPrivileges()" placeholder="Search privilege..">
+                    </div>
+                    <div class="form-group">
+                        Select all &nbsp;&nbsp;<input type="checkbox" name="selectAll" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                @foreach (var p in ViewBag.Privileges)
+                {
+                    <div class="col-6 checkbox-privilege">
+                        <input type="checkbox" name="privilege" id="@p.Id" value="@p.Id" />&nbsp;&nbsp;
+                        @Html.Label(null, (string)p.Action, new { @for = (string)p.Id })
+                    </div>
+                }
+            </div>
+
+            <br />
+            <div class="row">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Create</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <!-- /.card-body -->
+</div>
+
+<style>
+    #searchPrivilege {
+        /*background-image: url('/css/searchicon.png'); /* Add a search icon to input */
+        background-image: url('img/search.png');
+        background-position: 10px 12px; /* Position the search icon */
+        background-repeat: no-repeat; /* Do not repeat the icon image */
+        width: 100%; /* Full-width */
+        font-size: 16px; /* Increase font-size */
+        padding: 12px 20px 12px 40px; /* Add some padding */
+        border: 1px solid #ddd; /* Add a grey border */
+        margin-bottom: 12px; /* Add some space below the input */
+    }
+</style>
+
+@section Scripts {
+
+    <script type="text/javascript">
+        $(function () {
+
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            $('input[type=checkbox][name=selectAll]').on('ifChecked ifUnchecked', function (event) {
+                if (event.type == 'ifChecked')
+                    $('input[type=checkbox][name=privilege]').iCheck('check');
+                else
+                    $('input[type=checkbox][name=privilege]').iCheck('uncheck');
+            });
+
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+        });
+
+        function searchPrivileges() {
+
+            // Declare variables
+            var input, filter, div, label, i, txtValue;
+            input = document.getElementById('searchPrivilege');
+            filter = input.value.toUpperCase();
+
+            div = document.getElementsByClassName("checkbox-privilege");
+
+            // Loop through all list items, and hide those who don't match the search query
+            for (i = 0; i < div.length; i++) {
+
+                label = div[i].getElementsByTagName("label")[0];
+                txtValue = label.textContent || label.innerText;
+
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    div[i].style.display = "";
+                } else {
+                    div[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+}
+

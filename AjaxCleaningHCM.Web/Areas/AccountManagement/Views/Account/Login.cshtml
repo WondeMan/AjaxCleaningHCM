@@ -1,0 +1,60 @@
+﻿@model AjaxCleaningHCM.Domain.ViewModels.LoginViewModel
+@{
+    Layout = "/Areas/AccountManagement/Views/Shared/_loginLayout.cshtml";
+    ViewData["Title"] = "Login";
+}
+<section id="contact" class="contact login-section">
+    <div class="container" data-aos="fade-up">
+     <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <div class="card" style="box-shadow: 0 0 50px 15px rgba(32,33,36,.13); border-radius:0px 80px 0px 80px; ">
+                <br />
+                    <div class="card-body">
+                        <div style="text-align: center;">
+                            <div style="display: inline-block;">
+                                <img src="/img/logo.png" width="70" height="70" style="opacity: .8;">
+                                <h5>Welcome!</h5>
+                            </div>
+                        </div>
+                        <hr />
+                        @if (ViewBag.Messege != null)
+                        {
+                            <label class="text-danger">@ViewBag.Messege</label>
+                        }
+                        <form asp-action="Login" method="post">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="Username"></label>
+                                <input asp-for="Username" placeholder="Username" class="form-control" />
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Password"></label>
+                                <input asp-for="Password" placeholder="Password" class="form-control" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input asp-for="RememberMe" type="checkbox" class="custom-control-input">
+                                    <label class="custom-control-label" asp-for="RememberMe">@Html.DisplayNameFor(m => m.RememberMe)</label>
+                                    <a class="box-title col-md-2" asp-action="ForgotPassword">  Forgot Password?</a>
+
+                                </div>
+                            </div>
+                            <br />
+                            <button type="submit" class="btn btn-success btn-block" style="width:50%;    margin-left: 21%; border-radius: 20px;">
+                                Login
+                            </button>
+                            <br />
+                        </form>
+                    </div>
+              <br />
+              </div>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+</section>

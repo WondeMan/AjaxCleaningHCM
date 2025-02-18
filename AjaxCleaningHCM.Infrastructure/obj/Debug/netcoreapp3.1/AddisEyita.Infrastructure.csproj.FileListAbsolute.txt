@@ -1,0 +1,13 @@
+D:\Personal\AddisEyita\AddisEyita\AddisEyita.Infrastructure\bin\Debug\netcoreapp3.1\AddisEyita.Infrastructure.deps.json
+D:\Personal\AddisEyita\AddisEyita\AddisEyita.Infrastructure\bin\Debug\netcoreapp3.1\AddisEyita.Infrastructure.dll
+D:\Personal\AddisEyita\AddisEyita\AddisEyita.Infrastructure\bin\Debug\netcoreapp3.1\AddisEyita.Infrastructure.pdb
+D:\Personal\AddisEyita\AddisEyita\AddisEyita.Infrastructure\bin\Debug\netcoreapp3.1\AddisEyita.Domain.dll
+D:\Personal\AddisEyita\AddisEyita\AddisEyita.Infrastructure\bin\Debug\netcoreapp3.1\AddisEyita.Domain.pdb
+D:\Personal\AddisEyita\AddisEyita\AddisEyita.Infrastructure\obj\Debug\netcoreapp3.1\AddisEyita.Infrastructure.csproj.AssemblyReference.cache
+D:\Personal\AddisEyita\AddisEyita\AddisEyita.Infrastructure\obj\Debug\netcoreapp3.1\AddisEyita.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\Personal\AddisEyita\AddisEyita\AddisEyita.Infrastructure\obj\Debug\netcoreapp3.1\AddisEyita.Infrastructure.AssemblyInfoInputs.cache
+D:\Personal\AddisEyita\AddisEyita\AddisEyita.Infrastructure\obj\Debug\netcoreapp3.1\AddisEyita.Infrastructure.AssemblyInfo.cs
+D:\Personal\AddisEyita\AddisEyita\AddisEyita.Infrastructure\obj\Debug\netcoreapp3.1\AddisEyita.Infrastructure.csproj.CoreCompileInputs.cache
+D:\Personal\AddisEyita\AddisEyita\AddisEyita.Infrastructure\obj\Debug\netcoreapp3.1\AddisEyita.Infrastructure.csproj.CopyComplete
+D:\Personal\AddisEyita\AddisEyita\AddisEyita.Infrastructure\obj\Debug\netcoreapp3.1\AddisEyita.Infrastructure.dll
+D:\Personal\AddisEyita\AddisEyita\AddisEyita.Infrastructure\obj\Debug\netcoreapp3.1\AddisEyita.Infrastructure.pdb

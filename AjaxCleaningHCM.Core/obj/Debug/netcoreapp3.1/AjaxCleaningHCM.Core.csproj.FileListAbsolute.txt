@@ -1,0 +1,16 @@
+D:\personal\AjaxCleaningHCM\AjaxCleaningHCM.Core\bin\Debug\netcoreapp3.1\AjaxCleaningHCM.Core.deps.json
+D:\personal\AjaxCleaningHCM\AjaxCleaningHCM.Core\bin\Debug\netcoreapp3.1\AjaxCleaningHCM.Core.dll
+D:\personal\AjaxCleaningHCM\AjaxCleaningHCM.Core\bin\Debug\netcoreapp3.1\AjaxCleaningHCM.Core.pdb
+D:\personal\AjaxCleaningHCM\AjaxCleaningHCM.Core\bin\Debug\netcoreapp3.1\AjaxCleaningHCM.Domain.dll
+D:\personal\AjaxCleaningHCM\AjaxCleaningHCM.Core\bin\Debug\netcoreapp3.1\AjaxCleaningHCM.Infrastructure.dll
+D:\personal\AjaxCleaningHCM\AjaxCleaningHCM.Core\bin\Debug\netcoreapp3.1\AjaxCleaningHCM.Domain.pdb
+D:\personal\AjaxCleaningHCM\AjaxCleaningHCM.Core\bin\Debug\netcoreapp3.1\AjaxCleaningHCM.Infrastructure.pdb
+D:\personal\AjaxCleaningHCM\AjaxCleaningHCM.Core\obj\Debug\netcoreapp3.1\AjaxCleaningHCM.Core.csproj.AssemblyReference.cache
+D:\personal\AjaxCleaningHCM\AjaxCleaningHCM.Core\obj\Debug\netcoreapp3.1\AjaxCleaningHCM.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\personal\AjaxCleaningHCM\AjaxCleaningHCM.Core\obj\Debug\netcoreapp3.1\AjaxCleaningHCM.Core.AssemblyInfoInputs.cache
+D:\personal\AjaxCleaningHCM\AjaxCleaningHCM.Core\obj\Debug\netcoreapp3.1\AjaxCleaningHCM.Core.AssemblyInfo.cs
+D:\personal\AjaxCleaningHCM\AjaxCleaningHCM.Core\obj\Debug\netcoreapp3.1\AjaxCleaningHCM.Core.csproj.CoreCompileInputs.cache
+D:\personal\AjaxCleaningHCM\AjaxCleaningHCM.Core\obj\Debug\netcoreapp3.1\AjaxCleaningHCM.Core.sourcelink.json
+D:\personal\AjaxCleaningHCM\AjaxCleaningHCM.Core\obj\Debug\netcoreapp3.1\AjaxClea.3F55B22E.Up2Date
+D:\personal\AjaxCleaningHCM\AjaxCleaningHCM.Core\obj\Debug\netcoreapp3.1\AjaxCleaningHCM.Core.dll
+D:\personal\AjaxCleaningHCM\AjaxCleaningHCM.Core\obj\Debug\netcoreapp3.1\AjaxCleaningHCM.Core.pdb
