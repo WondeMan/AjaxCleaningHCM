@@ -1,5 +1,31 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    Layout = "_Default";
 }
+@using AjaxCleaningHCM;
+@model AjaxCleaningHCM.Domain.DTO.MasterData.Response.ShiftsResponseDto
+
+
+<div class="card">
+    <table class="table table-striped" id="table">
+        <thead>
+            <tr>
+                <th>Shift Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ShiftDtos)
+            {
+                <tr id="row-@item.Id">
+                    <td>@item.Name</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit text-info"></i></a> |
+                        <a class="btn" onclick="deleteEntity('Shift', '@item.Id')">
+                            <i class="fas fa-trash text-danger"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

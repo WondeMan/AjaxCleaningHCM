@@ -22,40 +22,10 @@
                 <td>@item.BankName</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit text-info"></i></a> |
-                    <button class="btn btn-danger btn-sm" onclick="deleteBank('@item.Id')">Delete</button>
+                    <a class="btn" onclick="deleteEntity('Bank','@item.Id')"><i class="fas fa-trash text-danger"></i></a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<script>
-    function deleteBank(bankCode) {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Yes, delete it!"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '/AjaxCleaningHCM/Bank/Delete/' + bankCode,
-                    success: function(response) {
-                        if (response.success) {
-                            Swal.fire("Deleted!", "The bank has been deleted.", "success");
-                            $("#row-" + bankCode).remove();
-                        } else {
-                            Swal.fire("Error!", "Something went wrong.", "error");
-                        }
-                    },
-                    error: function() {
-                        Swal.fire("Error!", "Failed to delete the bank.", "error");
-                    }
-                });
-            }
-        });
-    }
-</script>

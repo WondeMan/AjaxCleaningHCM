@@ -14,10 +14,10 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
     public class ShiftController : Controller
     {
         private readonly ILogger<ShiftController> _logger;
-        private readonly IShift _product;
-        public ShiftController(IShift product, ILogger<ShiftController> logger)
+        private readonly IShift _Shift;
+        public ShiftController(IShift Shift, ILogger<ShiftController> logger)
         {
-            _product = product;
+            _Shift = Shift;
             _logger = logger;
         }
         [HttpGet]
@@ -27,7 +27,7 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ActionName"] = "Index";
             try
             {
-                var products = await _product.GetAllAsync();
+                var Shifts = await _Shift.GetAllAsync();
 
                 if (TempData["SuccessAlertMessage"] != null)
                 {
@@ -40,11 +40,11 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
                     ViewBag.FailureAlertMessage = TempData["FailureAlertMessage"];
                     TempData["FailureAlertMessage"] = null;
                 }
-                return View("Index", products);
+                return View("Index", Shifts);
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error occurred while fetching all products.", ex);
+                _logger.LogError("Error occurred while fetching all Shifts.", ex);
                 return View("Error");
             }
         }
@@ -55,18 +55,18 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ControllerName"] = "Shift";
             try
             {
-                var product = await _product.GetByIdAsync(id);
+                var Shift = await _Shift.GetByIdAsync(id);
 
-                if (product == null)
+                if (Shift == null)
                 {
                     return NotFound();
                 }
 
-                return View(product);
+                return View(Shift);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occurred while fetching product with ID {id}.", ex);
+                _logger.LogError($"Error occurred while fetching Shift with ID {id}.", ex);
                 return View("Error");
             }
         }
@@ -77,18 +77,18 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ControllerName"] = "Shift";
             try
             {
-                var product = await _product.GetByIdAsync(id);
+                var Shift = await _Shift.GetByIdAsync(id);
 
-                if (product == null)
+                if (Shift == null)
                 {
                     return NotFound();
                 }
 
-                return PartialView(product.ShiftDto);
+                return PartialView(Shift.ShiftDto);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occurred while fetching product with ID {id} for editing.", ex);
+                _logger.LogError($"Error occurred while fetching Shift with ID {id} for editing.", ex);
                 return View("Error"); // You can customize the error view
             }
         }
@@ -100,7 +100,7 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ControllerName"] = "Shift";
             try
             {
-                var result = await _product.UpdateAsync(request);
+                var result = await _Shift.UpdateAsync(request);
                 if (result.Status == OperationStatus.SUCCESS)
                 {
                     TempData["SuccessAlertMessage"] = "Shift successfully updated.";
@@ -110,8 +110,8 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
 
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Error occurred while updating product.");
-                    TempData["FailureAlertMessage"] = "Error occurred while updating product.";
+                    ModelState.AddModelError(string.Empty, "Error occurred while updating Shift.");
+                    TempData["FailureAlertMessage"] = "Error occurred while updating Shift.";
 
                     return View(request);
                 }
@@ -119,7 +119,7 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error occurred while updating product.", ex);
+                _logger.LogError("Error occurred while updating Shift.", ex);
                 return View("Error");
             }
         }
@@ -138,7 +138,7 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ControllerName"] = "Shift";
             try
             {
-                var result = await _product.CreateAsync(request);
+                var result = await _Shift.CreateAsync(request);
 
                 if (result.Status == OperationStatus.SUCCESS)
                 {
@@ -148,42 +148,41 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Error occurred while creating product.");
-                    TempData["FailureAlertMessage"] = "Error occurred while creating product.";
+                    ModelState.AddModelError(string.Empty, "Error occurred while creating Shift.");
+                    TempData["FailureAlertMessage"] = "Error occurred while creating Shift.";
 
                     return View(request);
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error occurred while creating product.", ex);
+                _logger.LogError("Error occurred while creating Shift.", ex);
                 return View("Error");
             }
         }
 
-        [HttpGet]
+
+        [HttpPost]
+
         public async Task<IActionResult> Delete(long id)
         {
             ViewData["ControllerName"] = "Shift";
             try
             {
-                var result = await _product.DeleteAsync(id);
+                var result = await _Shift.DeleteAsync(id);
                 if (result.Status == OperationStatus.SUCCESS)
                 {
-                    TempData["SuccessAlertMessage"] = "Shift successfully deleted.";
-                    return RedirectToAction("Index");
+                    return Json(new { success = true, message = "Shift successfully deleted." });
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Error occurred while deleteding product.");
-                    TempData["FailureAlertMessage"] = "Error occurred while deleteding product.";
-                    return RedirectToAction("Index");
+                    return Json(new { success = false, message = "Error occurred while deleting Shift." });
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occurred while deleting product with ID {id}.", ex);
-                return View("Error");
+                _logger.LogError($"Error occurred while deleting Shift with ID {id}.", ex);
+                return Json(new { success = false, message = "An error occurred: " + ex.Message });
             }
         }
     }

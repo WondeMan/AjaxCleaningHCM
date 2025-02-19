@@ -82,6 +82,46 @@
                                     }
                                    
                                     @RenderBody()
+                                    <script>
+                                        function deleteEntity(entityName, id, rowPrefix = "row") {
+                                            Swal.fire({
+                                                title: `Delete ${entityName}?`,
+                                                text: "You won't be able to revert this!",
+                                                icon: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonColor: "#d33",
+                                                cancelButtonColor: "#3085d6",
+                                                confirmButtonText: "Yes, delete it!"
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    var deleteUrl = `/AjaxCleaningHCM/${entityName}/Delete/`;
+                                                    $.ajax({
+                                                        url: deleteUrl,
+                                                        type: 'POST',
+                                                        data: { id: id },
+                                                        success: function (response) {
+                                                            if (response.success) {
+                                                                Swal.fire({
+                                                                    title: "Deleted!",
+                                                                    text: `${entityName} has been deleted.`,
+                                                                    icon: "success",
+                                                                    timer: 3000, // Auto-close after 3 seconds
+                                                                    showConfirmButton: false
+                                                                }).then(() => {
+                                                                    location.reload(); // Reload the page after success message
+                                                                });
+                                                            } else {
+                                                                Swal.fire("Error!", response.message || `Failed to delete ${entityName}.`, "error");
+                                                            }
+                                                        },
+                                                        error: function (xhr) {
+                                                            Swal.fire("Error!", "Failed to delete " + entityName + ": " + xhr.responseText, "error");
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    </script>
                                 </div>
                             </div>
                         </div>
@@ -112,6 +152,7 @@
                     'excel', 'pdf', 'print'
                 ]
             });
+
         });
         @if (ViewBag.SuccessAlertMessage != null)
         {
