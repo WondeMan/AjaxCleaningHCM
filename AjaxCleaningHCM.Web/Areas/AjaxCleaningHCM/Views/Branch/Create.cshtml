@@ -1,5 +1,78 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    Layout = "_Default";
 }
+@using AjaxCleaningHCM;
+@model AjaxCleaningHCM.Domain.DTO.MasterData.Response.BranchDto
+
+<div class="card">
+    @using (Html.BeginForm("Create", "Branch", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="row p-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group col-md-4 col-lg-3">
+                <label class="control-label">Branch Name</label>
+                <input asp-for="BranchName" class="form-control" />
+                <span asp-validation-for="BranchName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-4 col-lg-3">
+                <label class="control-label">Branch Code</label>
+                <input asp-for="BranchCode" class="form-control" />
+                <span asp-validation-for="BranchCode" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-4 col-lg-3">
+                <label class="control-label">Description</label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-4 col-lg-3">
+                <label class="control-label">Address</label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-4 col-lg-3">
+                <label class="control-label">City</label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-4 col-lg-3">
+                <label class="control-label">Physical Location</label>
+                <input asp-for="PhysicalLocation" class="form-control" />
+                <span asp-validation-for="PhysicalLocation" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-4 col-lg-3">
+                <label class="control-label">Phone</label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-4 col-lg-3">
+                <label class="control-label">Number Of Employees</label>
+                <input asp-for="NumberOfEmployees" class="form-control" />
+                <span asp-validation-for="NumberOfEmployees" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-4 col-lg-3">
+                <label class="control-label">Contact Person Id</label>
+                <input asp-for="ContactPersonId" class="form-control" />
+                <span asp-validation-for="ContactPersonId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-4 col-lg-3">
+                <label class="control-label">Email Address</label>
+                <input asp-for="EmailAddress" class="form-control" />
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-2 col-lg-2 d-flex align-items-end">
+                <button id="submit" class="btn btn-success" type="submit">Save</button>
+            </div>
+        </div>
+    }
+</div>

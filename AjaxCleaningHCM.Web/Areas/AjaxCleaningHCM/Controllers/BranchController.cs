@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System;
 using static AjaxCleaningHCM.Domain.Enums.Common;
 using Microsoft.AspNetCore.Authorization;
+using AjaxCleaningHCM.Domain.Models.MasterData;
 
 namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
 {
@@ -14,10 +15,10 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
     public class BranchController : Controller
     {
         private readonly ILogger<BranchController> _logger;
-        private readonly IBranch _product;
-        public BranchController(IBranch product, ILogger<BranchController> logger)
+        private readonly IBranch _branch;
+        public BranchController(IBranch branch, ILogger<BranchController> logger)
         {
-            _product = product;
+            _branch = branch;
             _logger = logger;
         }
         [HttpGet]
@@ -27,7 +28,7 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ActionName"] = "Index";
             try
             {
-                var products = await _product.GetAllAsync();
+                var branchs = await _branch.GetAllAsync();
 
                 if (TempData["SuccessAlertMessage"] != null)
                 {
@@ -40,11 +41,11 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
                     ViewBag.FailureAlertMessage = TempData["FailureAlertMessage"];
                     TempData["FailureAlertMessage"] = null;
                 }
-                return View("Index", products);
+                return View("Index", branchs);
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error occurred while fetching all products.", ex);
+                _logger.LogError("Error occurred while fetching all branchs.", ex);
                 return View("Error");
             }
         }
@@ -55,18 +56,18 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ControllerName"] = "Branch";
             try
             {
-                var product = await _product.GetByIdAsync(id);
+                var branch = await _branch.GetByIdAsync(id);
 
-                if (product == null)
+                if (branch == null)
                 {
                     return NotFound();
                 }
 
-                return View(product);
+                return View(branch);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occurred while fetching product with ID {id}.", ex);
+                _logger.LogError($"Error occurred while fetching branch with ID {id}.", ex);
                 return View("Error");
             }
         }
@@ -77,18 +78,18 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ControllerName"] = "Branch";
             try
             {
-                var product = await _product.GetByIdAsync(id);
+                var branch = await _branch.GetByIdAsync(id);
 
-                if (product == null)
+                if (branch == null)
                 {
                     return NotFound();
                 }
 
-                return PartialView(product.BranchDto);
+                return PartialView(branch.BranchDto);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occurred while fetching product with ID {id} for editing.", ex);
+                _logger.LogError($"Error occurred while fetching branch with ID {id} for editing.", ex);
                 return View("Error"); // You can customize the error view
             }
         }
@@ -100,7 +101,7 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ControllerName"] = "Branch";
             try
             {
-                var result = await _product.UpdateAsync(request);
+                var result = await _branch.UpdateAsync(request);
                 if (result.Status == OperationStatus.SUCCESS)
                 {
                     TempData["SuccessAlertMessage"] = "Branch successfully updated.";
@@ -110,8 +111,8 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
 
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Error occurred while updating product.");
-                    TempData["FailureAlertMessage"] = "Error occurred while updating product.";
+                    ModelState.AddModelError(string.Empty, "Error occurred while updating branch.");
+                    TempData["FailureAlertMessage"] = "Error occurred while updating branch.";
 
                     return View(request);
                 }
@@ -119,7 +120,7 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error occurred while updating product.", ex);
+                _logger.LogError("Error occurred while updating branch.", ex);
                 return View("Error");
             }
         }
@@ -138,7 +139,7 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ControllerName"] = "Branch";
             try
             {
-                var result = await _product.CreateAsync(request);
+                var result = await _branch.CreateAsync(request);
 
                 if (result.Status == OperationStatus.SUCCESS)
                 {
@@ -148,42 +149,40 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Error occurred while creating product.");
-                    TempData["FailureAlertMessage"] = "Error occurred while creating product.";
+                    ModelState.AddModelError(string.Empty, "Error occurred while creating branch.");
+                    TempData["FailureAlertMessage"] = "Error occurred while creating branch.";
 
                     return View(request);
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error occurred while creating product.", ex);
+                _logger.LogError("Error occurred while creating branch.", ex);
                 return View("Error");
             }
         }
 
-        [HttpGet]
+        [HttpPost]
+
         public async Task<IActionResult> Delete(long id)
         {
             ViewData["ControllerName"] = "Branch";
             try
             {
-                var result = await _product.DeleteAsync(id);
+                var result = await _branch.DeleteAsync(id);
                 if (result.Status == OperationStatus.SUCCESS)
                 {
-                    TempData["SuccessAlertMessage"] = "Branch successfully deleted.";
-                    return RedirectToAction("Index");
+                    return Json(new { success = true, message = "Branch successfully deleted." });
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Error occurred while deleteding product.");
-                    TempData["FailureAlertMessage"] = "Error occurred while deleteding product.";
-                    return RedirectToAction("Index");
+                    return Json(new { success = false, message = "Error occurred while deleting Branch." });
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occurred while deleting product with ID {id}.", ex);
-                return View("Error");
+                _logger.LogError($"Error occurred while deleting Branch with ID {id}.", ex);
+                return Json(new { success = false, message = "An error occurred: " + ex.Message });
             }
         }
     }
