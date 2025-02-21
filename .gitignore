@@ -52,3 +52,14 @@ _ReSharper.Caches/
 **/.idea/
 **/.vs/
 **/.sln.iml
+/AjaxCleaningHCM.Domain/obj/Debug/netcoreapp3.1/AjaxCleaningHCM.Domain.AssemblyInfo.cs
+/AjaxCleaningHCM.Infrastructure/obj/Debug/netcoreapp3.1/AjaxCleaningHCM.Infrastructure.AssemblyInfo.cs
+/AjaxCleaningHCM.Domain/obj/Debug/netcoreapp3.1/AjaxCleaningHCM.Domain.AssemblyInfoInputs.cache
+/AjaxCleaningHCM.Domain/obj/Debug/netcoreapp3.1/AjaxCleaningHCM.Domain.dll
+/AjaxCleaningHCM.Domain/obj/Debug/netcoreapp3.1/AjaxCleaningHCM.Domain.pdb
+/AjaxCleaningHCM.Domain/obj/Debug/netcoreapp3.1/AjaxCleaningHCM.Domain.sourcelink.json
+/AjaxCleaningHCM.Infrastructure/obj/Debug/netcoreapp3.1/AjaxCleaningHCM.Infrastructure.AssemblyInfoInputs.cache
+/AjaxCleaningHCM.Infrastructure/obj/Debug/netcoreapp3.1/AjaxCleaningHCM.Infrastructure.csproj.AssemblyReference.cache
+/AjaxCleaningHCM.Infrastructure/obj/Debug/netcoreapp3.1/AjaxCleaningHCM.Infrastructure.dll
+/AjaxCleaningHCM.Infrastructure/obj/Debug/netcoreapp3.1/AjaxCleaningHCM.Infrastructure.pdb
+/AjaxCleaningHCM.Infrastructure/obj/Debug/netcoreapp3.1/AjaxCleaningHCM.Infrastructure.sourcelink.json
