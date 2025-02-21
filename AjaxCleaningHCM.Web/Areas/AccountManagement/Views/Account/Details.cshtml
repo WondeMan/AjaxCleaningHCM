@@ -1,0 +1,132 @@
+﻿@model AjaxCleaningHCM.Core.UserManagment.Identity.User
+
+@using AjaxCleaningHCM.Core.UserManagment.Identity
+@using System.Collections.Generic
+
+@{
+    ViewData["Title"] = "Details";
+
+    ViewData["ControllerName"] = "Account";
+    ViewData["ActionName"] = "Details";
+    var roles = (List<Role>)ViewBag.Roles;
+}
+
+<!-- Default box -->
+<div class="card">
+    <div class="card-header">
+        <a class="box-title col-md-2" asp-action="Index"><i class="fa fa-arrow-left text-green"></i>  Back to List </a>
+
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="container">
+                    <dl class="row">
+
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.UserName)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.UserName)&nbsp;
+                        </dd>
+
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Email)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Email)&nbsp;
+                        </dd>
+
+                        @*<dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.EmployeeDetails.FullName)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.EmployeeDetails.FullName)&nbsp;
+                        </dd>
+
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.EmployeeDetails.PhoneNumber)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.EmployeeDetails.PhoneNumber)&nbsp;
+                        </dd>
+
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.EmployeeDetails.CostCenter)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.EmployeeDetails.CostCenter)&nbsp;
+                        </dd>*@
+
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.RegisteredDate)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.RegisteredDate)&nbsp;
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.RegisteredBy)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.RegisteredBy)&nbsp;
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.LastUpdateDate)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.LastUpdateDate)&nbsp;
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.UpdatedBy)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.UpdatedBy)&nbsp;
+                        </dd>
+                    </dl>
+
+                    <hr />
+                    <div class="row">
+                        <div class="col-2">
+                            <h5>
+                                <b>Roles</b>
+                            </h5>
+                        </div>
+                        <div class="col-10">
+                            @foreach (var p in roles)
+                            {
+                                <div>
+                                    <input type="checkbox" value="@p.Name" checked />
+                                    @Html.Label(null, (string)p.Name, new { @for = (string)p.Id })
+                                    &nbsp;&nbsp;&nbsp;
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '15%' // optional
+            });
+        });
+
+    </script>
+}
+

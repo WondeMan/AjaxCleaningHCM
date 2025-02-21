@@ -1,0 +1,39 @@
+﻿@model AjaxCleaningHCM.Domain.DTO.MasterData.Request.ProductDto
+@{
+    Layout = "_Default";
+}
+<form asp-area="AjaxCleaningHCM" asp-controller="Product" asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" id="Name" placeholder="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" type="number" id="Price" placeholder="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" placeholder="Description" class="form-control">
+
+                                </textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group pl-2">
+            <button type="submit" role="button" class="btn btn-primary">Create</button>
+        </div>
+    </div>
+</form>
+
+

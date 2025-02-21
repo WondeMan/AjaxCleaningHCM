@@ -1,0 +1,15 @@
+D:\Personal\Project\YAMNewTemplate\YAMNewTemplate\YAMBakery.Core\bin\Debug\netcoreapp3.1\YAMBakery.Core.deps.json
+D:\Personal\Project\YAMNewTemplate\YAMNewTemplate\YAMBakery.Core\bin\Debug\netcoreapp3.1\YAMBakery.Core.dll
+D:\Personal\Project\YAMNewTemplate\YAMNewTemplate\YAMBakery.Core\bin\Debug\netcoreapp3.1\YAMBakery.Core.pdb
+D:\Personal\Project\YAMNewTemplate\YAMNewTemplate\YAMBakery.Core\bin\Debug\netcoreapp3.1\YAMBakery.Domain.dll
+D:\Personal\Project\YAMNewTemplate\YAMNewTemplate\YAMBakery.Core\bin\Debug\netcoreapp3.1\YAMBakery.Infrastructure.dll
+D:\Personal\Project\YAMNewTemplate\YAMNewTemplate\YAMBakery.Core\bin\Debug\netcoreapp3.1\YAMBakery.Domain.pdb
+D:\Personal\Project\YAMNewTemplate\YAMNewTemplate\YAMBakery.Core\bin\Debug\netcoreapp3.1\YAMBakery.Infrastructure.pdb
+D:\Personal\Project\YAMNewTemplate\YAMNewTemplate\YAMBakery.Core\obj\Debug\netcoreapp3.1\YAMBakery.Core.csproj.AssemblyReference.cache
+D:\Personal\Project\YAMNewTemplate\YAMNewTemplate\YAMBakery.Core\obj\Debug\netcoreapp3.1\YAMBakery.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\Personal\Project\YAMNewTemplate\YAMNewTemplate\YAMBakery.Core\obj\Debug\netcoreapp3.1\YAMBakery.Core.AssemblyInfoInputs.cache
+D:\Personal\Project\YAMNewTemplate\YAMNewTemplate\YAMBakery.Core\obj\Debug\netcoreapp3.1\YAMBakery.Core.AssemblyInfo.cs
+D:\Personal\Project\YAMNewTemplate\YAMNewTemplate\YAMBakery.Core\obj\Debug\netcoreapp3.1\YAMBakery.Core.csproj.CoreCompileInputs.cache
+D:\Personal\Project\YAMNewTemplate\YAMNewTemplate\YAMBakery.Core\obj\Debug\netcoreapp3.1\YAMBakery.Core.csproj.CopyComplete
+D:\Personal\Project\YAMNewTemplate\YAMNewTemplate\YAMBakery.Core\obj\Debug\netcoreapp3.1\YAMBakery.Core.dll
+D:\Personal\Project\YAMNewTemplate\YAMNewTemplate\YAMBakery.Core\obj\Debug\netcoreapp3.1\YAMBakery.Core.pdb

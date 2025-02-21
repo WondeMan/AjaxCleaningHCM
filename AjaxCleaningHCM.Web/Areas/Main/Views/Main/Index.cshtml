@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using AjaxCleaningHCM.Core.UserManagment.Identity
+
+@inject SignInManager<User> SignInManager
+
+@{
+    ViewData["Title"] = "Index";
+}
+<section id="hero" class="d-flex align-items-center">
+    <div class="container" data-aos="zoom-out" data-aos-delay="100">
+        <h1>Welcome to <span>AjaxCleaningHCM</span></h1>
+        <h2>Simple forms used to submit Ajax Cleaning HCM' related Ajax Cleaning HCMs.</h2>
+
+        <div class="d-flex">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <a asp-action="Index" asp-controller="Dashboard" asp-area="AjaxCleaningHCM" class="btn-get-started scrollto">Get Started</a>
+            }
+            else
+            {
+                <a class="btn-get-started scrollto" asp-area="AccountManagement" asp-controller="Account" asp-action="Login">Get Started</a>
+            }            
+        </div>
+    </div>
+</section>
