@@ -2,4 +2,53 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/AjaxCleaningHCM.Infrastructure/bin/Debug/netcoreapp3.1
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.vscode/
+
+# Build artifacts
+bin/
+obj/
+out/
+*.exe
+*.dll
+*.pdb
+*.appx
+
+# Packages
+packages/
+*.nupkg
+project.lock.json
+
+# Logs and database
+*.log
+*.ldb
+*.mdf
+*.ldf
+
+# OS-Specific
+Thumbs.db
+.DS_Store
+
+# ASP.NET Core / .NET
+wwwroot/
+node_modules/
+dist/
+.env
+appsettings.json
+appsettings.*.json
+secrets.json
+
+# Resharper
+_ReSharper.Caches/
+*.DotSettings.user
+
+# Rider
+.idea/
+
+# JetBrains Rider / ReSharper
+**/.idea/
+**/.vs/
+**/.sln.iml
