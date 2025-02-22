@@ -19,6 +19,8 @@ namespace AjaxCleaningHCM.Infrastructure.Data
         public DbSet<EmployeeHistory> EmployeeHistories { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<MenuBuilder> MenuBuilders { get; set; }
+        public DbSet<EmployeeTermination> EmployeeTerminations { get; set; }
+
 
     }
 }

@@ -131,7 +131,7 @@ namespace AjaxCleaningHCM.Core.MasterData.Service
             try
             {
                 var result = new EmployeeResponseDto();
-                var Employee = await _EmployeeRepository.WhereAsync(x => x.Id == id && x.RecordStatus == RecordStatus.Active, "EmployeeBranches.Branch", "Bank");
+                var Employee = await _EmployeeRepository.WhereAsync(x => x.Id == id, "EmployeeBranches.Branch", "Bank");
                 if (Employee == null)
                     return new EmployeeResponseDto { Status = OperationStatus.ERROR, Message = "Record Does Not Exist" };
                 result.EmployeeDto = Employee.FirstOrDefault();
@@ -356,6 +356,36 @@ namespace AjaxCleaningHCM.Core.MasterData.Service
                     Message = "Error Has Occurred While Processing Your Request",
                     Status = OperationStatus.ERROR
                 };
+            }
+        }
+        public OperationStatus Remove(long id)
+        {
+            try
+            {
+                var employee = _EmployeeRepository.Find(id);
+                employee.LastUpdateDate = DateTime.Now;
+                employee.RecordStatus = RecordStatus.Deleted;
+                _EmployeeRepository.Update(employee);
+                return OperationStatus.SUCCESS;
+            }
+            catch (Exception ex)
+            {
+                return OperationStatus.ERROR;
+            }
+        }
+        public OperationStatus ActivateEmployee(long id)
+        {
+            try
+            {
+                var employee = _EmployeeRepository.Find(id);
+                employee.LastUpdateDate = DateTime.Now;
+                employee.RecordStatus = RecordStatus.Active;
+                _EmployeeRepository.Update(employee);
+                return OperationStatus.SUCCESS;
+            }
+            catch (Exception ex)
+            {
+                return OperationStatus.ERROR;
             }
         }
     }

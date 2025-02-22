@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using static AjaxCleaningHCM.Domain.Enums.Common;
 
 namespace AjaxCleaningHCM.Core.MasterData.Interface
 {
@@ -19,6 +20,8 @@ namespace AjaxCleaningHCM.Core.MasterData.Interface
         Task<EmployeeResponseDto> UpdateAsync(Employee request);
         Task<OperationStatusResponse> DeleteAsync(long id);
         Employee GetEmployee();
+        OperationStatus Remove(long id);
+        OperationStatus ActivateEmployee(long id);
         Task<EmployeeResponseDtos> Search(EmployeeSearchRequest EmployeeSearchRequest);
 
     }

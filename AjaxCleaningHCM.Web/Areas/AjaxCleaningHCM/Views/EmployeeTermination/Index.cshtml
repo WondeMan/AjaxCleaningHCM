@@ -1,0 +1,54 @@
+﻿@using static AjaxCleaningHCM.Domain.Enums.Common
+@model AjaxCleaningHCM.Domain.DTO.MasterData.Response.EmployeeTerminationResponseDtos
+@{
+    Layout = "_Default";
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Employee ID</th>
+            <th>Termination Date</th>
+            <th>Reason</th>
+            <th>Remark</th>
+            <th>Letter Type</th>
+            <th>
+                Letter Request
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.EmployeeTerminationDtos)
+        {
+            <tr>
+                <td>@item.EmployeeId</td>
+                <td>@item.TerminationDate.ToShortDateString()</td>
+                <td>@item.TerminationReason</td>
+                <td>@item.Remark</td>
+                <td>@item.LetterType</td>
+                <td>
+                    <a href="@Url.Action("TerminationLetter", "EmployeeTermination", new { id = item.Id })" class="">
+                        Termination
+                    </a>|       <a href="@Url.Action("ExperienceLetter", "EmployeeTermination", new { id = item.Employee.Id })" class="">
+                        Experience
+                    </a>
+                    @if (item.EmployeeStatus == EmployeeStatus.Terminated)
+                    {
+                        <span>|</span>
+                        <a href="#" class="text-dange" data-toggle="modal" data-target="#Rehire-@item.Id">
+                            Rehire
+                        </a>
+                    }
+
+                </td>
+                <td>
+                    <a asp-area="AjaxCleaningHCM" asp-controller="EmployeeTermination" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-area="AjaxCleaningHCM" asp-controller="EmployeeTermination" asp-action="Details" asp-route-id="@item.Id" class=""><i class="fa text-info fa fa-book"></i> </a>
+                    
+                    <a class="btn" onclick="deleteEntity('Bank','@item.Id')"><i class="fas fa-trash text-danger"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

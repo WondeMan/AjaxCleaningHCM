@@ -21,6 +21,7 @@ namespace AjaxCleaningHCM.Web.Installer
 
             services.AddScoped<IBranch, BranchService>();
 
+            services.AddScoped<IEmployeeTermination, EmployeeTerminationService>();
 
 
         }

@@ -1,0 +1,86 @@
+﻿@using static AjaxCleaningHCM.Domain.Enums.Common
+@model AjaxCleaningHCM.Domain.Models.MasterData.EmployeeTermination
+@{
+    Layout = "_Default";
+}
+
+<form asp-area="AjaxCleaningHCM" asp-controller="EmployeeTermination" asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-6">
+          
+            <label class="control-label">Employee</label><br />
+            <select asp-for="EmployeeId" asp-items="@ViewBag.Employee" class="form-control Employee select2 w-100"  style="width:100% !important;">
+            </select>
+            <span asp-validation-for="EmployeeId" class="text-danger"></span>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label asp-for="TerminationDate" class="control-label"></label>
+                <input asp-for="TerminationDate" type="date" id="TerminationDate" class="form-control" />
+                <span asp-validation-for="TerminationDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label asp-for="TerminationReason" class="control-label"></label>
+                <select asp-for="TerminationReason" class="form-control" asp-items="Html.GetEnumSelectList<TerminationReason>()">
+                    <option value="">Select Reason</option>
+                </select>
+                <span asp-validation-for="TerminationReason" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label asp-for="LetterType" class="control-label"></label>
+                <select asp-for="LetterType" class="form-control" id="LetterTypeDropdown" asp-items="Html.GetEnumSelectList<LetterType>()">
+                    <option value="">Select Letter Type</option>
+                </select>
+                <span asp-validation-for="LetterType" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                <label asp-for="Remark" class="control-label"></label>
+                <textarea asp-for="Remark" placeholder="Remark" class="form-control"></textarea>
+                <span asp-validation-for="Remark" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-12" id="LetterContainer">
+            <div class="form-group">
+                <label asp-for="Letter" class="control-label"></label>
+                <textarea asp-for="Letter" placeholder="Letter" class="form-control"></textarea>
+
+                <span asp-validation-for="Letter" class="text-danger"></span>
+            </div>
+        </div>
+       
+    </div>
+    <div class="row">
+        <div class="form-group pl-2">
+            <button type="submit" role="button" class="btn btn-primary">Create</button>
+        </div>
+    </div>
+</form>
+@section Scripts {
+    <script>
+        $(function () {
+            $('.select2').select2()
+            toggleLetterField();
+
+            $('#LetterTypeDropdown').change(function () {
+                toggleLetterField();
+            });
+            function toggleLetterField() {
+                if ($('#LetterTypeDropdown').val() === "2") {
+                    $('#LetterContainer').show();
+                    $('#LetterField').attr('required', true);
+                } else {
+                    $('#LetterContainer').hide();
+                    $('#LetterField').removeAttr('required').val('');
+
+                }
+            }
+        });
+    </script>
+}

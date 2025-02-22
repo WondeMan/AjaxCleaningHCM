@@ -1,0 +1,100 @@
+﻿@using AjaxCleaningHCM.Domain.DTO.MasterData.Response
+@using static AjaxCleaningHCM.Domain.Enums.Common
+@{
+    ViewData["Title"] = "Employee Termination Letter";
+    ViewData["ControllerName"] = "EmployeeTermination";
+}
+@model AjaxCleaningHCM.Domain.DTO.MasterData.Response.EmployeeTerminationResponseDto
+<div class="box">
+
+        <div class="card-body">
+            @{
+                string employeeName = Model.EmployeeTerminationDto.Employee.FullName;
+                string employeeId = Model.EmployeeTerminationDto.Employee.EmployeeId;
+                string position = Model.EmployeeTerminationDto.Employee.JobPosition;
+                DateTime dateOfJoining = Model.EmployeeTerminationDto.Employee.EmploymentStartDate;
+                DateTime? terminationDate = Model.EmployeeTerminationDto.TerminationDate;
+                string reasonForTermination = Model.EmployeeTerminationDto.TerminationReason.ToString();
+                DateTime letterDate = DateTime.Now;
+
+            }
+
+            <div class="container card card-body">
+                <div class="d-flex justify-content-end">
+                    <button id="print" class="btn btn-info px-4">Print</button>
+                </div>
+                <br />
+                <div id="DivIdToPrint" class="priter-container">
+                    <style>
+                        .printable {
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                            text-align: left;
+                            padding: 7Px 3px 7px 3px;
+                        }
+                    </style>
+                    <img width="80" height="80" style="float:left" src="~/img/light_logo.png" />
+
+                    <img width="80" height="80" style="float:right" src="~/img/light_logo.png" />
+                    <h2 style="text-align:center">Ajax</h2>
+                    <h2 style="text-align:center">Cleaning HCM</h2>
+                    <br />
+                    <p style="text-align:center"><b>Date: </b> @DateTime.Now</p>
+                    @if (Model.EmployeeTerminationDto.LetterType == LetterType.Custom)
+                    {
+                        <div>
+                            @Html.Raw(Model.EmployeeTerminationDto.Letter)
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <p>Ajax Cleaning HCM</p>
+                            <p>Addis Ababa Ethiopia,</p>
+                            <p>@letterDate.ToString("MMMM dd, yyyy")</p>
+
+
+                            <p>To @employeeName</p>
+                            <p>Employee ID: @employeeId</p>
+
+                            <p>Dear @employeeName,</p>
+
+                            <p>This letter is to inform you that your employment with Ajax Cleaning HCM will be terminated effective @terminationDate?.ToString("MMMM dd, yyyy"). Your last working day will be @terminationDate?.ToString("MMMM dd, yyyy"). This decision has been made due to <strong>@reasonForTermination</strong>.</p>
+
+                            <p>You joined our company on @dateOfJoining.ToString("MMMM dd, yyyy") and served as a @position in our staff. We appreciate the contributions you have made during your tenure with us.</p>
+
+                            <p>Please ensure that all company property is returned and any outstanding work is completed before your last working day.</p>
+
+                            <p>We wish you all the best in your future endeavors.</p>
+
+                            <p>Sincerely,</p>
+                            <p>_________________</p>
+                            <p>Ajax Cleaning HCM</p>
+
+                        </div>
+
+
+                    }
+                    <br />
+                    <br />
+                    @*<p style="text-align:center">Signature___________________</p>*@
+                </div>
+            </div>
+
+        </div>
+
+
+</div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#print").click(function () {
+            var divToPrint = document.getElementById('DivIdToPrint');
+            var newWin = window.open('', 'Print-Window');
+            newWin.document.open('', '_blank', 'width=100,height=100');
+            newWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML);
+            newWin.document.close();
+            setTimeout(function () { newWin.close(); }, 10);
+        });
+    });
+</script>

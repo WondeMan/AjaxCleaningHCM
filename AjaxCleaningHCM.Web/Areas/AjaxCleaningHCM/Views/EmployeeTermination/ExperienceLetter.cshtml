@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = "Employee Experience Letter";
+    ViewData["ControllerName"] = "EmployeeTermination";
+}
+@model AjaxCleaningHCM.Domain.DTO.MasterData.Response.EmployeeResponseDto
+
+<div class="box">
+
+        <div class="card-body">
+            @{
+                string employeeName = Model.EmployeeDto.FullName;
+                string employeeId = Model.EmployeeDto.EmployeeId;
+                string position = Model.EmployeeDto.JobPosition;
+                DateTime dateOfJoining = Model.EmployeeDto.EmploymentStartDate;
+                DateTime? terminationDate = ViewBag.TerminationDate;
+                DateTime letterDate = DateTime.Now;
+
+            }
+
+            <div class="container card card-body">
+                <div class="d-flex justify-content-end">
+                    <button id="print" class="btn btn-info px-4">Print</button>
+                </div>
+                <br />
+                <div id="DivIdToPrint" class="priter-container">
+                    <style>
+                        .printable {
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                            text-align: left;
+                            padding: 7Px 3px 7px 3px;
+                        }
+                    </style>
+                    <img width="80" height="80" style="float:left" src="~/img/light_logo.png" />
+
+                    <img width="80" height="80" style="float:right" src="~/img/light_logo.png" />
+                    <h2 style="text-align:center">Ajax</h2>
+                    <h2 style="text-align:center">Cleaning HCM</h2>
+                    <br />
+                    <p style="text-align:center"><b>Date: </b> @DateTime.Now</p>
+                    <div>
+                        <p>YAM Bekery</p>
+                        <p>Addis Ababa Ethiopia,</p>
+                        <p>@letterDate.ToString("MMMM dd, yyyy")</p>
+
+
+                        <p>To Whom It May Concern,</p>
+
+                        <p>This is to certify that @employeeName, holding Employee ID @employeeId, has been employed with Ajax Cleaning HCM from @dateOfJoining.ToString("MMMM dd, yyyy") to @terminationDate?.ToString("MMMM dd, yyyy"). During this period, @employeeName held the position of @position in our staff.</p>
+
+                        <p>@employeeName has been a valuable asset to our organization and has shown dedication and professionalism in their work. They have contributed significantly to the success of our company and have been an excellent team player.</p>
+
+                        <p>We wish @employeeName all the best in their future endeavors.</p>
+
+                        <p>Sincerely,</p>
+                        <p>_________________</p>
+                        <p>Ajax Cleaning HCM</p>
+
+                    </div>
+
+                    <br />
+                    <br />
+                    @*<p style="text-align:center">Signature___________________</p>*@
+                </div>
+            </div>
+
+
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+<script>
+    $(document).ready(function () {
+        $("#print").click(function () {
+            var divToPrint = document.getElementById('DivIdToPrint');
+            var newWin = window.open('', 'Print-Window');
+            newWin.document.open('', '_blank', 'width=100,height=100');
+            newWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML);
+            newWin.document.close();
+            setTimeout(function () { newWin.close(); }, 10);
+        });
+    });
+</script>
