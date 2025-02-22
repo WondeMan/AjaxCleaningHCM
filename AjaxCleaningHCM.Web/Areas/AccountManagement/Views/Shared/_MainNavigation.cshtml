@@ -6,7 +6,7 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 @inject ApplicationDbContext context
-
+@inject AjaxCleaningHCM.Core.Helper.Interface.IMenuBuilder menuBuilder
 @{
     var userEmail = string.Empty;
     if (SignInManager.IsSignedIn(User))
@@ -42,100 +42,7 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>
-                            Account
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview pl-2">
-                        <li class="nav-item">
-                            <a asp-area="AccountManagement"
-                               asp-controller="Account"
-                               asp-action="Index"
-                               class="nav-link">
-                                <i class="far fa-user nav-icon"></i>
-                                <p>Users</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a asp-area="AccountManagement"
-                               asp-controller="Roles"
-                               asp-action="Index"
-                               class="nav-link">
-
-                                <i class="fas fa-user-check nav-icon"></i>
-                                <p>Roles</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a asp-area="AccountManagement"
-                               asp-controller="Privileges"
-                               asp-action="Index"
-                               class="nav-link">
-                                <i class="fa fa-user-lock nav-icon"></i>
-                                <p>Privileges</p>
-                            </a>
-                        </li>
-
-                      @*   <li class="nav-item">
-                            <a asp-area="AccountManagement"
-                               asp-controller="Account"
-                               asp-action="ResetPassword"
-                               class="nav-link">
-                                <i class="fas fa-key nav-icon"></i>
-                                <p>Reset Password</p>
-                            </a>
-                        </li> *@
-                    </ul>
-
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-database"></i>
-                        <p>
-                            Master Data
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview pl-2">
-                        <li class="nav-item">
-                            <a asp-area="AjaxCleaningHCM"
-                               asp-controller="Product"
-                               asp-action="Index"
-                               class="nav-link">
-                                <i class="fas fa-box-open nav-icon"></i>
-                                <p>Product</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-cogs"></i>
-                        <p>
-                            Operational
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview pl-2">
-                        <li class="nav-item">
-                            <a asp-area="AjaxCleaningHCM"
-                               asp-controller="Customer"
-                               asp-action="Index"
-                               class="nav-link">
-                                <i class="fas fa-box-open nav-icon"></i>
-                                <p>Product</p>
-                            </a>
-                        </li>
-
-                    </ul>
-
-                </li>
+                @Html.Raw(@menuBuilder.MenuBuilderTree());
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
