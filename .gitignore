@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/AjaxCleaningHCM
+/AjaxCleaningHCM.Web/obj/Debug/netcoreapp3.1
+/AjaxCleaningHCM.Infrastructure/obj/Debug/netcoreapp3.1/AjaxCleaningHCM.Infrastructure.AssemblyInfo.cs
+/AjaxCleaningHCM.Infrastructure/obj/Debug/netcoreapp3.1/AjaxCleaningHCM.Infrastructure.AssemblyInfoInputs.cache
