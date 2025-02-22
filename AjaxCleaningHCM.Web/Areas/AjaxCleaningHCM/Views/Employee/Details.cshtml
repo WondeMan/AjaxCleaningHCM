@@ -1,0 +1,144 @@
+﻿@model AjaxCleaningHCM.Domain.DTO.MasterData.Response.EmployeeResponseDto
+
+<div class="card card-body">
+
+    <div class="text-center">
+        <img class="profile-user-img img-fluid img-circle" src="@Model.EmployeeDto.EmpoloyePhotoPath" alt="User profile picture">
+        <h5>@Model.EmployeeDto.FullName</h5>
+    </div>
+    <table class="table">
+        <tr>
+            <th>Employee Id:</th>
+            <td>@Html.DisplayFor(model => model.EmployeeDto.EmployeeId)</td>
+        </tr>
+        <tr>
+            <th>Date Of Birth:</th>
+            <td>@Html.DisplayFor(model => model.EmployeeDto.DateOfBirth)</td>
+        </tr>
+        <tr>
+            <th>Gender:</th>
+            <td>@Html.DisplayFor(model => model.EmployeeDto.Gender)</td>
+        </tr>
+        <tr>
+            <th>Phone Number:</th>
+            <td>@Html.DisplayFor(model => model.EmployeeDto.PhoneNumber)</td>
+        </tr>
+        <tr>
+            <th>Emergency Contact FullName:</th>
+            <td>@Html.DisplayFor(model => model.EmployeeDto.EmergencyContactFullName)</td>
+        </tr>
+        <tr>
+            <th>Emergency Contact Phone Number:</th>
+            <td>@Html.DisplayFor(model => model.EmployeeDto.EmergencyContactPhoneNumber)</td>
+        </tr>
+        <tr>
+            <th>Education Status:</th>
+            <td>@Html.DisplayFor(model => model.EmployeeDto.EducationStatus)</td>
+        </tr>
+        <tr>
+            <th>Field Of Study:</th>
+            <td>@Html.DisplayFor(model => model.EmployeeDto.FieldOfStudy)</td>
+        </tr>
+        <tr>
+            <th>Institution:</th>
+            <td>@Html.DisplayFor(model => model.EmployeeDto.Institution)</td>
+        </tr>
+        <tr>
+            <th>Email Address:</th>
+            <td>@Html.DisplayFor(model => model.EmployeeDto.EmailAddress)</td>
+        </tr>
+        <tr>
+            <th>Employment Start Date:</th>
+            <td>@Html.DisplayFor(model => model.EmployeeDto.EmploymentStartDate)</td>
+        </tr>
+        <tr>
+            <th>Employment End Date:</th>
+            <td>@Html.DisplayFor(model => model.EmployeeDto.EmploymentEndDate)</td>
+        </tr>
+        <tr>
+            <th>Job Title:</th>
+            <td>@Html.DisplayFor(model => model.EmployeeDto.JobTitle)</td>
+        </tr>
+        <tr>
+            <th>Job Position:</th>
+            <td>@Html.DisplayFor(model => model.EmployeeDto.JobPosition)</td>
+        </tr>
+        <tr>
+            <th>Branch :</th>
+            <td>
+                @foreach (var item in Model.EmployeeDto.EmployeeBranches)
+                {
+                    <label>@item.Branch.Name</label>
+
+                    <br />
+                }
+            </td>
+        </tr>
+
+        <tr>
+            <th>Monthly Salary:</th>
+            <td>@Html.DisplayFor(model => model.EmployeeDto.MonthlySalary)</td>
+        </tr>
+        <tr>
+            <th>Bank Account Number:</th>
+            <td>@Html.DisplayFor(model => model.EmployeeDto.BankAccountNumber)</td>
+        </tr>
+        <tr>
+            <th>Bank :</th>
+            <td>@Html.DisplayFor(model => model.EmployeeDto.Bank.Name)</td>
+        </tr>
+        <tr>
+            <th>Certification :</th>
+            <td>
+                @if (Model.EmployeeDto.CirtificationPath != null && Model.EmployeeDto.CirtificationPath.Contains("pdf"))
+                {
+                    <p><a href="@Url.Action("Cirtification", "Employee", new { file = @Model.EmployeeDto.CirtificationPath })" target="_blank">Certification</a></p>
+                }
+                else
+                {
+                    <p><a href="@Model.EmployeeDto.CirtificationPath" target="_blank">Certification</a></p>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Employee Kebele ID :</th>
+            <td>
+                @if (Model.EmployeeDto.EmployeeKebeleIDPath != null && Model.EmployeeDto.EmployeeKebeleIDPath.Contains("pdf"))
+                {
+                    <p><a href="@Url.Action("EmployeeKebeleID", "Employee", new { file = @Model.EmployeeDto.EmployeeKebeleIDPath })" target="_blank">Employee Kebele ID</a></p>
+                }
+                else
+                {
+                    <p><a href="@Model.EmployeeDto.EmployeeKebeleIDPath" target="_blank">Employee Kebele ID</a></p>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Guarantee Kebele ID :</th>
+            <td>
+                @if (Model.EmployeeDto.GurrentKebeleIDPath != null && Model.EmployeeDto.GurrentKebeleIDPath.Contains("pdf"))
+                {
+                    <p> <a href="@Url.Action("GurrentKebeleID", "Employee", new { file = @Model.EmployeeDto.GurrentKebeleIDPath })" target="_blank">Guarantee Kebele ID</a></p>
+                }
+                else
+                {
+                    <p><a href="@Model.EmployeeDto.GurrentKebeleIDPath" target="_blank">Guarantee Kebele ID</a></p>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Guarantee Document :</th>
+            <td>
+                @if (Model.EmployeeDto.EmployeeKebeleIDPath != null && Model.EmployeeDto.EmployeeKebeleIDPath.Contains("pdf"))
+                {
+                    <p> <a href="@Url.Action("GurrentDocumnet", "Employee", new { file = @Model.EmployeeDto.GurrentDocumentPath })" target="_blank">Guarantee Document</a></p>
+                }
+                else
+                {
+                    <p><a href="@Model.EmployeeDto.GurrentDocumentPath" target="_blank">Gurrent Document</a></p>
+                }
+
+            </td>
+        </tr>
+    </table>
+</div>

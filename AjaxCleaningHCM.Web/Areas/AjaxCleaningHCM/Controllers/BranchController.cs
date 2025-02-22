@@ -7,6 +7,7 @@ using System;
 using static AjaxCleaningHCM.Domain.Enums.Common;
 using Microsoft.AspNetCore.Authorization;
 using AjaxCleaningHCM.Domain.Models.MasterData;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
 namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
 {
@@ -15,10 +16,10 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
     public class BranchController : Controller
     {
         private readonly ILogger<BranchController> _logger;
-        private readonly IBranch _branch;
-        public BranchController(IBranch branch, ILogger<BranchController> logger)
+        private readonly IBranch _Branch;
+        public BranchController(IBranch Branch, ILogger<BranchController> logger)
         {
-            _branch = branch;
+            _Branch = Branch;
             _logger = logger;
         }
         [HttpGet]
@@ -28,7 +29,7 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ActionName"] = "Index";
             try
             {
-                var branchs = await _branch.GetAllAsync();
+                var Branchs = await _Branch.GetAllAsync();
 
                 if (TempData["SuccessAlertMessage"] != null)
                 {
@@ -41,11 +42,11 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
                     ViewBag.FailureAlertMessage = TempData["FailureAlertMessage"];
                     TempData["FailureAlertMessage"] = null;
                 }
-                return View("Index", branchs);
+                return View("Index", Branchs);
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error occurred while fetching all branchs.", ex);
+                _logger.LogError("Error occurred while fetching all Branchs.", ex);
                 return View("Error");
             }
         }
@@ -56,18 +57,18 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ControllerName"] = "Branch";
             try
             {
-                var branch = await _branch.GetByIdAsync(id);
+                var Branch = await _Branch.GetByIdAsync(id);
 
-                if (branch == null)
+                if (Branch == null)
                 {
                     return NotFound();
                 }
 
-                return View(branch);
+                return View(Branch);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occurred while fetching branch with ID {id}.", ex);
+                _logger.LogError($"Error occurred while fetching Branch with ID {id}.", ex);
                 return View("Error");
             }
         }
@@ -78,30 +79,30 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ControllerName"] = "Branch";
             try
             {
-                var branch = await _branch.GetByIdAsync(id);
+                var Branch = await _Branch.GetByIdAsync(id);
 
-                if (branch == null)
+                if (Branch == null)
                 {
                     return NotFound();
                 }
 
-                return PartialView(branch.BranchDto);
+                return PartialView(Branch.BranchDto);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occurred while fetching branch with ID {id} for editing.", ex);
+                _logger.LogError($"Error occurred while fetching Branch with ID {id} for editing.", ex);
                 return View("Error"); // You can customize the error view
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(BranchDto request)
+        public async Task<IActionResult> Edit(Branch request)
         {
             ViewData["ControllerName"] = "Branch";
             try
             {
-                var result = await _branch.UpdateAsync(request);
+                var result = await _Branch.UpdateAsync(request);
                 if (result.Status == OperationStatus.SUCCESS)
                 {
                     TempData["SuccessAlertMessage"] = "Branch successfully updated.";
@@ -111,8 +112,8 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
 
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Error occurred while updating branch.");
-                    TempData["FailureAlertMessage"] = "Error occurred while updating branch.";
+                    ModelState.AddModelError(string.Empty, result.Message);
+                    TempData["FailureAlertMessage"] = result.Message;
 
                     return View(request);
                 }
@@ -120,7 +121,7 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error occurred while updating branch.", ex);
+                _logger.LogError("Error occurred while updating Branch.", ex);
                 return View("Error");
             }
         }
@@ -134,12 +135,12 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(BranchDto request)
+        public async Task<IActionResult> Create(Branch request)
         {
             ViewData["ControllerName"] = "Branch";
             try
             {
-                var result = await _branch.CreateAsync(request);
+                var result = await _Branch.CreateAsync(request);
 
                 if (result.Status == OperationStatus.SUCCESS)
                 {
@@ -149,19 +150,19 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Error occurred while creating branch.");
-                    TempData["FailureAlertMessage"] = "Error occurred while creating branch.";
+                    ModelState.AddModelError(string.Empty, result.Message);
+                    TempData["FailureAlertMessage"] = result.Message;
 
                     return View(request);
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error occurred while creating branch.", ex);
+                _logger.LogError("Error occurred while creating Branch.", ex);
                 return View("Error");
             }
         }
-
+        
         [HttpPost]
 
         public async Task<IActionResult> Delete(long id)
@@ -169,14 +170,14 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ControllerName"] = "Branch";
             try
             {
-                var result = await _branch.DeleteAsync(id);
+                var result = await _Branch.DeleteAsync(id);
                 if (result.Status == OperationStatus.SUCCESS)
                 {
                     return Json(new { success = true, message = "Branch successfully deleted." });
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Error occurred while deleting Branch." });
+                    return Json(new { success = false, message = "Error occurred while deleting branch." });
                 }
             }
             catch (Exception ex)
@@ -186,4 +187,5 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             }
         }
     }
+
 }

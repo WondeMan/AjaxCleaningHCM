@@ -16,45 +16,6 @@
             <div class="content mt-3">
                 <div class="container-fluid">
                     <div class="row">
-                      @*   <div class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
-                            <a class="btn btn-primary btn-block margin-bottom" href="/AjaxCleaningHCM/@ViewData["ControllerName"]/Create"><i class="fa fa-cubes"></i> <span>New @ViewData["ControllerName"]</span></a>
-                            <div class="card mt-4">
-                                <div class="card-header">
-                                    <strong>Stock In</strong>
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <ul class="list-group list-group-flush ">
-
-                                        <li class="list-group-item pt-0 mt-0"><a href="/PurchaseOrder"><i class="fas fa-check-circle text-red"></i> Purchase</a></li>
-                                        <li class="list-group-item"><a href="/Receiving"><i class="fas fa-check-circle text-yellow"></i> Receiving</a></li>
-                                        <li class="list-group-item"><a href="/TransferOrder"><i class="fas fa-check-circle text-light-blue"></i> Transfer Order</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header">
-                                    <strong>Stock Out</strong>
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <ul class="list-group list-group-flush ">
-
-                                        <li class="list-group-item pt-0 mt-0"><a href="/SalesOrder"><i class="fas fa-check-circle text-red"></i> Sales</a></li>
-                                        <li class="list-group-item"><a href="/Shipment"><i class="fas fa-check-circle text-yellow"></i> Shipment</a></li>
-                                        <li class="list-group-item"><a href="/TransferOrder"><i class="fas fa-check-circle text-light-blue"></i> Transfer Order</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div> *@
                         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                             <div class="card" style="border-top: 5px solid #1b6ec2;">
                                 <div class="card-header">
@@ -132,11 +93,33 @@
         <partial name="_Footer" />
     </div>
 
-    <partial name="_Scripts" />
 
-    @RenderSection("Scripts", required: false)
+    <partial name="_Scripts" />
     <script>
         $(document).ready(function () {
+            $('#Image').on('change', function () {
+                const file = this.files[0];
+                const maxSize = 500 * 1024; // 500 KB
+
+                if (file.size > maxSize) {
+                    $('#fileSizeError').show();
+                    $('#submitButton').prop('disabled', true);
+
+                    $(this).val(''); // Clear the input field
+                } else {
+                    $('#fileSizeError').hide();
+                    $('#submitButton').prop('disabled', false);
+
+                }
+            });
+        });
+    </script>
+    @RenderSection("Scripts", required: false)
+
+    <script>
+
+        $(document).ready(function () {
+            $('.select2').select2()
             $('#table').DataTable({
                 "paging": true,
                 "lengthChange": false,
@@ -149,39 +132,68 @@
                 "pageLength": 10,
                 dom: 'Bfrtip',
                 buttons: [
-                    'excel', 'pdf', 'print'
+                    'excel', 'print'
                 ]
             });
+            $('#tableWithFooter').DataTable({
+                // Your data source, e.g., ajax, etc.
+                "footerCallback": function (row, data, start, end, display) {
+                    var api = this.api();
 
+                    // Convert to integer and sum the total column (index 3)
+                    var total = api
+                        .column(6, { page: 'current' })
+                        .data()
+                        .reduce(function (a, b) {
+                            return parseFloat(a) + parseFloat(b);
+                        }, 0);
+
+                    // Update the footer with the total
+                    $(api.column(6).footer()).html(total.toFixed(2));
+                },
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "iDisplayLength": 8,
+                "filtering": true,
+                "pageLength": 10,
+                dom: 'Bfrtip',
+                buttons: [
+                    'excel', 'print'
+                ]
+            });
         });
         @if (ViewBag.SuccessAlertMessage != null)
         {
             <text>
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: '@ViewBag.SuccessAlertMessage',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: '@ViewBag.SuccessAlertMessage',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
             </text>
             ViewBag.SuccessAlertMessage = null;
         }
         @if (ViewBag.FailureAlertMessage != null)
         {
             <text>
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: '@ViewBag.FailureAlertMessage',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: '@ViewBag.FailureAlertMessage',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
             </text>
             ViewBag.FailureAlertMessage = null;
         }
+
     </script>
-  
+
 </body>
 </html>
-

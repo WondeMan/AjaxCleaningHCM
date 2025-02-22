@@ -14,11 +14,12 @@ namespace AjaxCleaningHCM.Core.Account.Interface
         Task<List<User>> GetAllAsync();
         Task<User> GetByIdAsync(string id);
         Task<OperationStatusResponse> CreateAsync(User request, string roles);
+        Task<OperationStatusResponse> CreateFromEmployeeAsync(User request, string roles);
         Task<OperationStatusResponse> UpdateAsync(User request, string roles);
         Task<OperationStatusResponse> DeleteAsync(string id);
 
-        Task<OperationStatusResponse> ChangePassword(ChangePasswordViewModel model,string userId);
-        Task<OperationStatusResponse> ForgotPassword(ForgotPasswordViewModel model,string callbackUrl);
+        Task<OperationStatusResponse> ChangePassword(ChangePasswordViewModel model, string userId);
+        Task<OperationStatusResponse> ForgotPassword(ForgotPasswordViewModel model, string callbackUrl);
         Task<OperationStatusResponse> Login(LoginViewModel model);
         Task<OperationStatusResponse> Lockout(string id, bool lockout);
         Task<OperationStatusResponse> Lockout(User model);
@@ -29,4 +30,5 @@ namespace AjaxCleaningHCM.Core.Account.Interface
         Task<OperationStatusResponse> ResetPassword(string userName);
         Task LogOff();
     }
+
 }

@@ -1,80 +1,70 @@
-﻿@{
+﻿@model AjaxCleaningHCM.Domain.Models.MasterData.Branch
+@{
     Layout = "_Default";
 }
-@using AjaxCleaningHCM;
-@model AjaxCleaningHCM.Domain.DTO.MasterData.Response.BranchDto
-
-<div class="card">
-    @using (Html.BeginForm("Edit", "Branch", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-        <div class="row p-4">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <div class="form-group col-md-4 col-lg-3">
-                <label class="control-label">Branch Name</label>
-                <input asp-for="BranchName" class="form-control" />
-                <span asp-validation-for="BranchName" class="text-danger"></span>
-            </div>
-
-            <div class="form-group col-md-4 col-lg-3">
-                <label class="control-label">Branch Code</label>
-                <input asp-for="BranchCode" class="form-control" />
-                <span asp-validation-for="BranchCode" class="text-danger"></span>
-            </div>
-
-            <div class="form-group col-md-4 col-lg-3">
-                <label class="control-label">Description</label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-
-            <div class="form-group col-md-4 col-lg-3">
-                <label class="control-label">Address</label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-
-            <div class="form-group col-md-4 col-lg-3">
-                <label class="control-label">City</label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
-            </div>
-
-            <div class="form-group col-md-4 col-lg-3">
-                <label class="control-label">Physical Location</label>
-                <input asp-for="PhysicalLocation" class="form-control" />
-                <span asp-validation-for="PhysicalLocation" class="text-danger"></span>
-            </div>
-
-            <div class="form-group col-md-4 col-lg-3">
-                <label class="control-label">Phone</label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-
-            <div class="form-group col-md-4 col-lg-3">
-                <label class="control-label">Number Of Employees</label>
-                <input asp-for="NumberOfEmployees" class="form-control" />
-                <span asp-validation-for="NumberOfEmployees" class="text-danger"></span>
-            </div>
-
-            <div class="form-group col-md-4 col-lg-3">
-                <label class="control-label">Contact Person Id</label>
-                <input asp-for="ContactPersonId" class="form-control" />
-                <span asp-validation-for="ContactPersonId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group col-md-4 col-lg-3">
-                <label class="control-label">Email Address</label>
-                <input asp-for="EmailAddress" class="form-control" />
-                <span asp-validation-for="EmailAddress" class="text-danger"></span>
-            </div>
-
-            <input asp-for="Id" hidden class="form-control" />
-
-            <div class="form-group col-md-2 col-lg-2 d-flex align-items-end">
-                <button id="submit" class="btn btn-primary" type="submit">Update</button>
+<form asp-area="AjaxCleaningHCM" asp-controller="Branch" asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-4 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" id="Name" placeholder="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
         </div>
-    }
-</div>
+
+        <div class="col-4 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" id="Address" placeholder="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-4 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" id="City" placeholder="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-4 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+            <div class="form-group">
+                <label asp-for="PhysicalLocation" class="control-label"></label>
+                <input asp-for="PhysicalLocation" id="PhysicalLocation" placeholder="PhysicalLocation" class="form-control" />
+                <span asp-validation-for="PhysicalLocation" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-4 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" id="Phone" placeholder="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-4 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+            <div class="form-group">
+                <label asp-for="NumberOfEmployees" class="control-label"></label>
+                <input asp-for="NumberOfEmployees" id="NumberOfEmployees" placeholder="NumberOfEmployees" class="form-control" />
+                <span asp-validation-for="NumberOfEmployees" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" placeholder="Description" class="form-control">
+
+                                </textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group pl-2">
+            <button type="submit" role="button" class="btn btn-primary">Update</button>
+            <input type="text" asp-for="Id" hidden />
+
+        </div>
+    </div>
+</form>
+
+

@@ -7,6 +7,8 @@ using System;
 using AjaxCleaningHCM.Domain.DTO.MasterData.Response;
 using static AjaxCleaningHCM.Domain.Enums.Common;
 using Microsoft.AspNetCore.Authorization;
+using AjaxCleaningHCM.Domain.Models.MasterData;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
 namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
 {
@@ -15,10 +17,10 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
     public class BankController : Controller
     {
         private readonly ILogger<BankController> _logger;
-        private readonly IBank _bank;
-        public BankController(IBank product, ILogger<BankController> logger)
+        private readonly IBank _Bank;
+        public BankController(IBank Bank, ILogger<BankController> logger)
         {
-            _bank = product;
+            _Bank = Bank;
             _logger = logger;
         }
         [HttpGet]
@@ -28,7 +30,7 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ActionName"] = "Index";
             try
             {
-                var products = await _bank.GetAllAsync();
+                var Banks = await _Bank.GetAllAsync();
 
                 if (TempData["SuccessAlertMessage"] != null)
                 {
@@ -41,11 +43,11 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
                     ViewBag.FailureAlertMessage = TempData["FailureAlertMessage"];
                     TempData["FailureAlertMessage"] = null;
                 }
-                return View("Index", products);
+                return View("Index", Banks);
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error occurred while fetching all products.", ex);
+                _logger.LogError("Error occurred while fetching all Banks.", ex);
                 return View("Error");
             }
         }
@@ -56,18 +58,18 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ControllerName"] = "Bank";
             try
             {
-                var product = await _bank.GetByIdAsync(id);
+                var Bank = await _Bank.GetByIdAsync(id);
 
-                if (product == null)
+                if (Bank == null)
                 {
                     return NotFound();
                 }
 
-                return View(product);
+                return View(Bank);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occurred while fetching product with ID {id}.", ex);
+                _logger.LogError($"Error occurred while fetching Bank with ID {id}.", ex);
                 return View("Error");
             }
         }
@@ -78,49 +80,46 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ControllerName"] = "Bank";
             try
             {
-                var product = await _bank.GetByIdAsync(id);
+                var Bank = await _Bank.GetByIdAsync(id);
 
-                if (product == null)
+                if (Bank == null)
                 {
                     return NotFound();
                 }
 
-                return PartialView(product.BankDto);
+                return PartialView(Bank.BankDto);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occurred while fetching product with ID {id} for editing.", ex);
+                _logger.LogError($"Error occurred while fetching Bank with ID {id} for editing.", ex);
                 return View("Error"); // You can customize the error view
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(BankDto request)
+        public async Task<IActionResult> Edit(Bank request)
         {
             ViewData["ControllerName"] = "Bank";
             try
             {
-                var result = await _bank.UpdateAsync(request);
+                var result = await _Bank.UpdateAsync(request);
                 if (result.Status == OperationStatus.SUCCESS)
                 {
                     TempData["SuccessAlertMessage"] = "Bank successfully updated.";
                     return RedirectToAction("Index");
-
                 }
-
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Error occurred while updating product.");
-                    TempData["FailureAlertMessage"] = "Error occurred while updating product.";
-
+                    ModelState.AddModelError(string.Empty, result.Message);
+                    TempData["FailureAlertMessage"] = "Error occurred while updating Bank.";
                     return View(request);
                 }
 
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error occurred while updating product.", ex);
+                _logger.LogError("Error occurred while updating Bank.", ex);
                 return View("Error");
             }
         }
@@ -134,12 +133,12 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(BankDto request)
+        public async Task<IActionResult> Create(Bank request)
         {
             ViewData["ControllerName"] = "Bank";
             try
             {
-                var result = await _bank.CreateAsync(request);
+                var result = await _Bank.CreateAsync(request);
 
                 if (result.Status == OperationStatus.SUCCESS)
                 {
@@ -149,18 +148,19 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Error occurred while creating product.");
-                    TempData["FailureAlertMessage"] = "Error occurred while creating product.";
+                    ModelState.AddModelError(string.Empty, result.Message);
+                    TempData["FailureAlertMessage"] = "Error occurred while creating Bank.";
 
                     return View(request);
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error occurred while creating product.", ex);
+                _logger.LogError("Error occurred while creating Bank.", ex);
                 return View("Error");
             }
         }
+
 
         [HttpPost]
 
@@ -169,7 +169,7 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ControllerName"] = "Bank";
             try
             {
-                var result = await _bank.DeleteAsync(id);
+                var result = await _Bank.DeleteAsync(id);
                 if (result.Status == OperationStatus.SUCCESS)
                 {
                     return Json(new { success = true, message = "Bank successfully deleted." });

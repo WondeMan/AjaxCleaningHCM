@@ -1,0 +1,77 @@
+﻿@model AjaxCleaningHCM.Domain.DTO.MasterData.Response.BranchResponseDto
+@{
+    Layout = "_Default";
+}
+
+<div class="card">
+    <div class="card-body">
+        <table class="table">
+
+            <tr>
+                <th>
+                    Name
+                </th>
+                <td>@Html.DisplayFor(model => model.BranchDto.Name)</td>
+            </tr>
+            <tr>
+                <th>
+                    Code
+                </th>
+                <td>@Html.DisplayFor(model => model.BranchDto.Code)</td>
+            </tr>
+            <tr>
+                <th>
+                    Description
+                </th>
+                <td>@Html.DisplayFor(model => model.BranchDto.Description)</td>
+            </tr>
+
+
+            <tr>
+                <th>
+                    Address
+                </th>
+                <td>    @Html.DisplayFor(model => model.BranchDto.Address)</td>
+            </tr>
+            <tr>
+                <th>
+                    City
+                </th>
+                <td>    @Html.DisplayFor(model => model.BranchDto.City)</td>
+            </tr>
+            <tr>
+                <th>
+                    PhysicalLocation
+                </th>
+                <td>    @Html.DisplayFor(model => model.BranchDto.PhysicalLocation)</td>
+            </tr>
+            <tr>
+                <th>
+                    Phone
+                </th>
+                <td>    @Html.DisplayFor(model => model.BranchDto.Phone)</td>
+            </tr>
+
+
+        </table>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    @if (Model.BranchDto.Employees.Count() > 0)
+                    {
+                        <div class="col-6">
+                            <div class="card-header">
+                                <h5 class="header-title">Employees</h5>
+                            </div>
+                            @foreach (var item in Model.BranchDto.Employees)
+                            {
+                                <p><span class="fa fa-check-circle text-success pr-2"></span> @item.FullName</p>
+                            }
+                        </div>
+                    }
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

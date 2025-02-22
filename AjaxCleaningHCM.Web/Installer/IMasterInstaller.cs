@@ -20,7 +20,6 @@ namespace AjaxCleaningHCM.Web.Installer
             services.AddScoped<IEmployee, EmployeeService>();
 
             services.AddScoped<IBranch, BranchService>();
-            services.AddScoped<IShift, ShiftService>();
 
 
 

@@ -39,9 +39,9 @@ namespace AjaxCleaningHCM.Core.Account.Service
             _httpContextAccessor = httpContextAccessor;
             _context = context;
             _configuration = configuration;
-            _emailSender= emailSender;
+            _emailSender = emailSender;
             SignInManager = _signInManager;
-            UserManager= _userManager;
+            UserManager = _userManager;
         }
         public async Task<OperationStatusResponse> CreateAsync(User User, string roles)
         {
@@ -50,8 +50,63 @@ namespace AjaxCleaningHCM.Core.Account.Service
                 User.StartDate = DateTime.Now;
                 User.EndDate = DateTime.MaxValue;
                 User.RegisteredDate = DateTime.Now;
+                User.RecordStatus = RecordStatus.Active;
                 User.RegisteredBy = _httpContextAccessor.HttpContext.Session.GetString("CurrentUsername");
-                if (_context.Users.Count(c => c.UserName == User.UserName) == 0)
+                if (_context.Users.Where(a => a.RecordStatus != RecordStatus.Deleted).Count(c => c.UserName == User.UserName) == 0)
+                {
+                    var result = await UserManager.CreateAsync(User, _configuration.GetSection("UserSettings")["DefaultPassword"]);
+
+                    if (result.Succeeded)
+                    {
+                        var Roles = new List<Role>();
+                        if (!string.IsNullOrEmpty(roles))
+                        {
+                            var _ids = roles.Split(",");
+                            var items = await _context.Roles.ToListAsync();
+                            for (int i = 0; i < _ids.Length; i++)
+                            {
+                                var role = items.FirstOrDefault(f => f.Id.Equals(_ids[i]));
+                                if (role != null)
+                                    Roles.Add(role);
+                            }
+                        }
+                        if (Roles.Count > 0)
+                        {
+                            foreach (var role in Roles)
+                            {
+                                _context.Add(new UserRole
+                                {
+                                    UserId = User.Id,
+                                    RoleId = role.Id
+                                });
+                            }
+                            _context.SaveChanges();
+                        }
+                    }
+                    return new OperationStatusResponse
+                    {
+                        Message = "Operation Successfully Completed",
+                        Status = OperationStatus.SUCCESS
+                    };
+                }
+                return new OperationStatusResponse { Message = "Error Has Occurred While Processing Your Request", Status = OperationStatus.ERROR };
+            }
+            catch (Exception ex)
+            {
+                return new OperationStatusResponse { Message = "Error Has Occurred While Processing Your Request", Status = OperationStatus.ERROR };
+            }
+        }
+        public async Task<OperationStatusResponse> CreateFromEmployeeAsync(User User, string roles)
+        {
+            try
+            {
+                User.StartDate = DateTime.Now;
+                User.EndDate = DateTime.MaxValue;
+                User.RegisteredDate = DateTime.Now;
+                User.RecordStatus = RecordStatus.Active;
+                User.LockedOut = true;
+                User.RegisteredBy = _httpContextAccessor.HttpContext.Session.GetString("CurrentUsername");
+                if (_context.Users.Where(a => a.RecordStatus != RecordStatus.Deleted).Count(c => c.RecordStatus != RecordStatus.Deleted && c.UserName == User.UserName) == 0)
                 {
                     var result = await UserManager.CreateAsync(User, _configuration.GetSection("UserSettings")["DefaultPassword"]);
 
@@ -99,11 +154,11 @@ namespace AjaxCleaningHCM.Core.Account.Service
         {
             try
             {
-                var User = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+                var User = await _context.Users.Where(a => a.RecordStatus != RecordStatus.Deleted).FirstOrDefaultAsync(u => u.Id == id);
 
                 if (User == null)
                     return new OperationStatusResponse { Message = "Record Does Not Exist", Status = OperationStatus.ERROR };
-                var user = _context.Users.FirstOrDefault(x => x.Id == id);
+                var user = _context.Users.Where(a => a.RecordStatus != RecordStatus.Deleted).FirstOrDefault(x => x.Id == id);
                 var userRoles = _context.UserRoles.Where(ur => ur.UserId == user.Id).ToList();
                 if (userRoles.Count > 0)
                 {
@@ -124,7 +179,7 @@ namespace AjaxCleaningHCM.Core.Account.Service
         {
             try
             {
-                var accounts =await _context.Users.Include(ur => ur.UserRoles).ToListAsync();
+                var accounts = await _context.Users.Where(a => a.RecordStatus != RecordStatus.Deleted).Include(ur => ur.UserRoles).ToListAsync();
                 return accounts;
             }
             catch (Exception)
@@ -133,12 +188,12 @@ namespace AjaxCleaningHCM.Core.Account.Service
                 throw;
             }
         }
-     
-         public async Task<List<User>> GetAllAsync(string role)
+
+        public async Task<List<User>> GetAllAsync(string role)
         {
             try
             {
-                var accounts =await _context.Users.Include(ur => ur.UserRoles).ToListAsync();
+                var accounts = await _context.Users.Where(a => a.RecordStatus != RecordStatus.Deleted).Include(ur => ur.UserRoles).ToListAsync();
 
                 if (!string.IsNullOrEmpty(role))
                 {
@@ -164,7 +219,7 @@ namespace AjaxCleaningHCM.Core.Account.Service
         {
             try
             {
-                var User = await _context.Users.Where(x => x.Id == id ).ToListAsync();
+                var User = await _context.Users.Where(x => x.RecordStatus != RecordStatus.Deleted && x.Id == id).ToListAsync();
                 return User.FirstOrDefault();
             }
             catch (Exception ex)
@@ -184,7 +239,7 @@ namespace AjaxCleaningHCM.Core.Account.Service
                 return new User();
             }
         }
-        public async Task<OperationStatusResponse> UpdateAsync(User request,string roles)
+        public async Task<OperationStatusResponse> UpdateAsync(User request, string roles)
         {
 
             var user = await _context.Users.FindAsync(request.Id);
@@ -289,7 +344,7 @@ namespace AjaxCleaningHCM.Core.Account.Service
                 };
             }
         }
-        public async Task<OperationStatusResponse> ForgotPassword(ForgotPasswordViewModel model,string callbackUrl)
+        public async Task<OperationStatusResponse> ForgotPassword(ForgotPasswordViewModel model, string callbackUrl)
         {
             try
             {
@@ -320,7 +375,7 @@ namespace AjaxCleaningHCM.Core.Account.Service
 
                 if (result.Succeeded)
                 {
-                    var user = _context.Users.Where(u => u.UserName == model.Username).ToList().FirstOrDefault();
+                    var user = _context.Users.Where(u => u.RecordStatus == RecordStatus.Active && u.UserName == model.Username).ToList().FirstOrDefault();
 
                     if (user.LockedOut)
                     {
@@ -369,11 +424,11 @@ namespace AjaxCleaningHCM.Core.Account.Service
                 throw;
             }
         }
-        public async Task<OperationStatusResponse> Lockout(string id,bool lockout)
+        public async Task<OperationStatusResponse> Lockout(string id, bool lockout)
         {
             try
             {
-                var user = await _context.Users.FirstOrDefaultAsync(f => f.Id == id);
+                var user = await _context.Users.Where(a => a.RecordStatus != RecordStatus.Deleted).FirstOrDefaultAsync(f => f.Id == id);
                 if (user != null)
                 {
                     user.LockedOut = lockout;
@@ -402,11 +457,11 @@ namespace AjaxCleaningHCM.Core.Account.Service
                     Status = OperationStatus.ERROR
                 };
             }
-           
+
         }
         public async Task<OperationStatusResponse> Lockout(User model)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Id == model.Id);
+            var user = _context.Users.Where(a => a.RecordStatus != RecordStatus.Deleted).FirstOrDefault(x => x.Id == model.Id);
             user.LockedOut = model.LockedOut;
             user.LockoutEnd = DateTime.UtcNow.AddDays(0);
             var result = await UserManager.UpdateAsync(user);
@@ -484,17 +539,17 @@ namespace AjaxCleaningHCM.Core.Account.Service
             {
                 var user = await GetByIdAsync(userName);
                 user.FirstLogin = true;
-                await UpdateAsync(user,null);
+                await UpdateAsync(user, null);
                 var code = await GeneratePasswordResetTokenAsync(user);
                 var defualtPassword = "Abcd@1234";
 
                 var result = await UserManager.ResetPasswordAsync(user, code, defualtPassword);
                 if (result.Succeeded)
                 {
-                    string body = "<p>Dear Ajax Cleaning HCM User,</p> <p>Your password is reset as per your request. Please use this temporary password until you change it. Password = <b>" + defualtPassword + "</b>. " +
+                    string body = "<p>Dear COCO COTTON CORNER User,</p> <p>Your password is reset as per your request. Please use this temporary password until you change it. Password = <b>" + defualtPassword + "</b>. " +
                         "This is auto generated notification. Please do not reply to this email.</p><p>Thank you,</p>";
-                    string subject = "Ajax Cleaning HCM Password Reset";
-                    _emailSender.SendEmail(body, new List<string> { user.Email }, new List<string> { }, subject, "Ajax Cleaning HCM Notification");
+                    string subject = "COCO COTTON CORNER Password Reset";
+                    _emailSender.SendEmail(body, new List<string> { user.Email }, new List<string> { }, subject, "COCO COTTON CORNER Notification");
                     return new OperationStatusResponse
                     {
                         Message = "Password reset successfully.",

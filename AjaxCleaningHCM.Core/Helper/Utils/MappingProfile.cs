@@ -14,18 +14,6 @@ namespace AjaxCleaningHCM.Core.Helper.Utils
         {
             CreateMap<Product, ProductDto>().ReverseMap();
             CreateMap<ProductDto, Product>().ReverseMap();
-
-            CreateMap<Employee, EmployeeDto>().ReverseMap();
-
-            CreateMap<Bank, BankDto>().ReverseMap();
-
-            CreateMap<Branch, BranchDto>().ReverseMap();
-
-            CreateMap<Shift, ShiftDto>().ReverseMap();
-
-            CreateMap<EmployeeHistory, ProductDto>().ReverseMap();
-
-
         }
     }
 }

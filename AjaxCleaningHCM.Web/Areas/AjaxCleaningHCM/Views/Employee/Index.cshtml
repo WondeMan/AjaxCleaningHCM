@@ -1,5 +1,224 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model AjaxCleaningHCM.Domain.DTO.MasterData.Response.EmployeeResponseDtos
+@using AjaxCleaningHCM.Domain.Enums
+@using static AjaxCleaningHCM.Domain.Enums.Common
 @{
+    Layout = "_Default";
+}
+<form asp-action="Search" asp-controller="Employee" asp-area="AjaxCleaningHCM">
+    <div class="modal-body">
+        <h4 class="selectedPreorderlist text-success"></h4>
+        <h4 class="unselectedPreorderlist text-danger"></h4>
+        <div class="row">
+            <div class="form-group col-sm-12 col-md-6 col-lg-2 col-xl-2">
+                <label for="SearchBygroup">Search By Group</label>
+                <select name="SearchBygroup" class="form-control SearchBygroup">
+                    <option value="DateRange" selected>Employment Date Range</option>
+                    <option value="Gender">Gender</option>
+                    <option value="EducationStatus">EducationStatus</option>
+                    <option value="Experience">Experience</option>
+                    <option value="Salary">Salary</option>
+                </select>
+            </div>
+            <div class="form-group col-sm-12 col-md-6 col-lg-2 col-xl-2 Gender">
+                <label for="Gender">Search By Gender</label>
+                <select name="Gender" id="Gender" as class="form-control " asp-items="@Html.GetEnumSelectList<Gender>()">
+                    <option value=0>Select Status</option>
+                </select>
+            </div>
+
+            <div class="form-group col-sm-12 col-md-6 col-lg-2 col-xl-2 EducationStatus">
+                <label for="EducationStatus">Search By Education Status</label>
+                <select name="EducationStatus" id="EducationStatus" as class="form-control " asp-items="@Html.GetEnumSelectList<EducationStatus>()">
+                    <option value=0>Select EducationStatus</option>
+                </select>
+            </div>
+            <div class="form-group col-sm-12 col-md-6 col-lg-2 col-xl-2 Experience">
+                <label class="control-label">Experience</label>
+                <input id="Experience" type="number" name="Experience" class="form-control Experience" />
+                <span class="error text-danger"></span>
+            </div>
+            <div class="form-group col-sm-12 col-md-6 col-lg-2 col-xl-2 DateSection">
+                <label class="control-label">Start Date</label>
+                <input id="StartDate" type="date" name="Start" class="form-control date StartDate" />
+                <span class="error text-danger"></span>
+            </div>
+            <div class="form-group col-sm-12 col-md-6 col-lg-2 col-xl-2 DateSection">
+                <label class="control-label">End Date</label>
+                <input id="EndDate" type="date" name="End" class="form-control date EndDate" />
+                <span class="error text-danger"></span>
+            </div>
+            <div class="form-group col-sm-12 col-md-6 col-lg-2 col-xl-2 Salary">
+                <label class="control-label">Min Salary</label>
+                <input id="MinSalary" type="number" name="MinSalary" class="form-control MinSalary" />
+                <span class="error text-danger"></span>
+            </div>
+            <div class="form-group col-sm-12 col-md-6 col-lg-2 col-xl-2 Salary">
+                <label class="control-label">Max Salary</label>
+                <input id="MaxSalary" type="number" name="MaxSalary" class="form-control MaxSalary" />
+                <span class="error text-danger"></span>
+            </div>
+            <div class="form-group col-sm-12 col-md-6 col-lg-2 col-xl-2 mt-4">
+                <button type="submit" class="btn btn-success submitSearchBygroup" style="margin-top:6px;"><i class="fa fa-search"></i> Search</button>
+            </div>
+        </div>
+    </div>
+
+</form>
+<div class="table-responsive">
+    <table id="table" class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    No
+                </th>
+                @*   <th>
+                    Branch
+                </th> *@
+                <th>
+                    Employee ID
+                </th>
+                <th>
+                    Full Name
+                </th>
+                <th>
+                    Phone Number
+                </th>
+                <th>
+                    Job Title
+                </th>
+                <th>
+                    Salary
+                </th>
+                <th>
+                    Account
+                </th>
+                <th>Start Date</th>
+                <th>Working Day</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int index = 0;
+            }
+            @foreach (var item in Model?.EmployeeDtos?.ToList())
+            {
+                var employmentDuration = DateTime.Now - item.EmploymentStartDate;
+                var years = (int)(employmentDuration.Days / 365.25);
+                var months = (int)((employmentDuration.Days % 365.25) / 30.44);
+                var days = (int)((employmentDuration.Days % 365.25) % 30.44);
+
+                var readableDuration = $"{years} year{(years != 1 ? "s" : "")}, {months} month{(months != 1 ? "s" : "")}, and {days} day{(days != 1 ? "s" : "")}";
+
+                index++;
+                <tr>
+                    <td>@index</td>
+                    @*  <td>
+                        @Html.DisplayFor(modelItem => item.Branch.Name)
+                    </td> *@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.JobTitle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MonthlySalary)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BankAccountNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmploymentStartDate)
+                    </td>
+                    <td>
+                        @readableDuration
+                    </td>
+                  
+                    <td>
+                        <div class="action-icons">
+                            <a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-eye text-info"></i></a> 
+                            <span>|</span>
+                            <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit text-info"></i></a> |
+                            <a class="btn" onclick="deleteEntity('Employee','@item.Id')"><i class="fas fa-trash text-danger"></i></a>
+                        </div>
+                    </td>
+                </tr>
+               
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/Yam.js"></script>
+    <script type="text/javascript">
+            $(document).ready(function () {
+
+            // Function to show/hide fields based on the selected option
+            function toggleFields() {
+                var selectedOption = $('.SearchBygroup').val();
+
+                $('.DateSection, .Experience, .Gender, .EducationStatus, .Salary').hide();
+                $('#EndDate, #StartDate, .Experience, .SearchByAuditStatus, .Gender, .EducationStatus, .Salary').prop('required', false);
+
+                switch (selectedOption) {
+                    case 'DateRange':
+                        $('.DateSection').show();
+                        $('#EndDate, #StartDate').prop('required', true);
+                        break;
+                    case 'Experience':
+                        $('.Experience').show();
+                        $('.Experience').prop('required', true);
+                        break;
+                    case 'Gender':
+                        $('.Gender').show();
+                        $('#Gender').prop('required', true);
+                        break;
+                    case 'EducationStatus':
+                        $('.EducationStatus').show();
+                        $('#EducationStatus').prop('required', true);
+                        break;
+                    case 'Salary':
+                        $('.Salary').show();
+                        $('#MinSalary, #MaxSalary').prop('required', true);
+                        break;
+                }
+            }
+
+            // Bind the change event of the dropdown to the toggleFields function
+            $('.SearchBygroup').change(toggleFields);
+
+            // Call the function on page load to set the initial state
+            toggleFields();
+
+            // Before form submission, set non-visible fields to null
+            $('form').submit(function (event) {
+                var selectedOption = $('.SearchBygroup').val();
+
+                if (selectedOption !== 'DateRange') {
+                    $('.DateSection input').val(null);
+                }
+                if (selectedOption !== 'Experience') {
+                    $('.Experience input').val(null);
+                }
+                if (selectedOption !== 'Gender') {
+                    $('.Gender input').val(null);
+                }
+                if (selectedOption !== 'EducationStatus') {
+                    $('.EducationStatus input').val(null);
+                }
+                if (selectedOption !== 'Salary') {
+                    $('.Salary input').val(null);
+                }
+            });
+        });
+    </script>
+
 }

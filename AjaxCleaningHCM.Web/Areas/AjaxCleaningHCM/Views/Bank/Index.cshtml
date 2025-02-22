@@ -1,31 +1,52 @@
-﻿@model AjaxCleaningHCM.Domain.DTO.MasterData.Response.BanksResponseDto
+﻿@model AjaxCleaningHCM.Domain.DTO.MasterData.Response.BankResponseDtos
 @{
     Layout = "_Default";
 }
-
-<!-- Include SweetAlert -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<table class="table table-striped" id="table">
-    <thead>
-        <tr>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.BankDtos)
-        {
-            <tr id="row-@item.BankCode">
-                <td>@item.BankCode</td>
-                <td>@item.BankName</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit text-info"></i></a> |
-                    <a class="btn" onclick="deleteEntity('Bank','@item.Id')"><i class="fas fa-trash text-danger"></i></a>
-                </td>
+<div class="table-responsive">
+    <table id="table" class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    No
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BankDtos.FirstOrDefault().Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BankDtos.FirstOrDefault().Code)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BankDtos.FirstOrDefault().Description)
+                </th>
+                <th>Action</th>
             </tr>
-        }
-    </tbody>
-</table>
-
+        </thead>
+        <tbody>
+            @{
+                int index = 0;
+            }
+            @foreach (var item in Model?.BankDtos?.ToList())
+            {
+                index++;
+                <tr>
+                    <td>@index</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        <div class="action-icons">
+                            <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit text-info"></i></a> |
+                            <a class="btn" onclick="deleteEntity('Bank','@item.Id')"><i class="fas fa-trash text-danger"></i></a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

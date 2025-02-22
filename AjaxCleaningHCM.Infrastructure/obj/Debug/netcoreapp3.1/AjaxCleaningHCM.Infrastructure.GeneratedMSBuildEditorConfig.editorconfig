@@ -1,5 +1,8 @@
 is_global = true
 build_property.RootNamespace = AjaxCleaningHCM.Infrastructure
-build_property.ProjectDir = D:\Personal\personal\Project\AjaxCleaningHCM\AjaxCleaningHCM.Infrastructure\
+build_property.ProjectDir = D:\personal\AjaxCleaningHCM\AjaxCleaningHCM.Infrastructure\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.CsWinRTUseWindowsUIXamlProjections = false
+build_property.EffectiveAnalysisLevelStyle = 
+build_property.EnableCodeStyleSeverity = 

@@ -17,29 +17,28 @@ namespace AjaxCleaningHCM.Core.MasterData.Service
 {
     public class BankService : IBank
     {
-        private readonly IRepositoryBase<Bank> _productRepository;
+        private readonly IRepositoryBase<Bank> _BankRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IMapper _mapper;
-        public BankService(IRepositoryBase<Bank> productRepository, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+        public BankService(IRepositoryBase<Bank> BankRepository, IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
-            _productRepository = productRepository;
-            _mapper = mapper;
+            _BankRepository = BankRepository;
         }
-        public async Task<BankResponseDto> CreateAsync(BankDto request)
+        public async Task<BankResponseDto> CreateAsync(Bank request)
         {
             try
             {
-                var product = _mapper.Map<Bank>(request);
-                product.StartDate = DateTime.Now;
-                product.EndDate = DateTime.MaxValue;
-                product.RegisteredDate = DateTime.Now;
-                product.RegisteredBy = _httpContextAccessor.HttpContext.Session.GetString("CurrentUsername");
-                product.RecordStatus = RecordStatus.Active;
-                product.Remark = "test";
-                product.IsReadOnly = false;
+                if (_BankRepository.ExistWhere(x => x.Name == request.Name && x.RecordStatus == RecordStatus.Active))
+                    return new BankResponseDto { Message = "Record already exist with the same name", Status = OperationStatus.ERROR };
+                request.StartDate = DateTime.Now;
+                request.EndDate = DateTime.MaxValue;
+                request.RegisteredDate = DateTime.Now;
+                request.RegisteredBy = _httpContextAccessor.HttpContext.User.Identity.Name;
+                request.RecordStatus = RecordStatus.Active;
+                request.Remark = "test";
+                request.IsReadOnly = false;
 
-                if (await _productRepository.AddAsync(product))
+                if (await _BankRepository.AddAsync(request))
                 {
                     return new BankResponseDto { Message = "Operation Successfully Completed", Status = OperationStatus.SUCCESS };
                 }
@@ -57,14 +56,13 @@ namespace AjaxCleaningHCM.Core.MasterData.Service
         {
             try
             {
-                var product = await _productRepository.FirstOrDefaultAsync(u => u.Id == id);
+                var Bank = await _BankRepository.FirstOrDefaultAsync(u => u.Id == id);
 
-                if (product == null)
+                if (Bank == null)
                     return new OperationStatusResponse { Message = "Record Does Not Exist", Status = OperationStatus.ERROR };
 
-                product.RecordStatus = RecordStatus.Deleted;
-                var productDto = _mapper.Map<Bank>(product);
-                if (await _productRepository.UpdateAsync(productDto))
+                Bank.RecordStatus = RecordStatus.Deleted;
+                if (await _BankRepository.UpdateAsync(Bank))
                     return new OperationStatusResponse { Message = "Operation Successfully Completed", Status = OperationStatus.SUCCESS };
                 else
                     return new BankResponseDto { Message = "Error Has Occurred While Processing Your Request", Status = OperationStatus.ERROR };
@@ -74,21 +72,21 @@ namespace AjaxCleaningHCM.Core.MasterData.Service
                 return new BankResponseDto { Message = "Error Has Occurred While Processing Your Request", Status = OperationStatus.ERROR };
             }
         }
-        public async Task<BanksResponseDto> GetAllAsync()
+        public async Task<BankResponseDtos> GetAllAsync()
         {
             try
             {
-                var result = new BanksResponseDto();
-                var productResponses = await _productRepository.WhereAsync(x => x.RecordStatus == RecordStatus.Active);
-                var productDTOs = _mapper.Map<List<BankDto>>(productResponses);
+                var result = new BankResponseDtos();
+                var BankResponses = await _BankRepository.WhereAsync(x => x.RecordStatus == RecordStatus.Active);
+                var BankDTOs = new List<BankResponseDtos>();
                 result.Status = OperationStatus.SUCCESS;
                 result.Message = "Operation Successfully Completed";
-                result.BankDtos = productDTOs;
+                result.BankDtos = BankResponses.ToList();
                 return result;
             }
             catch (Exception ex)
             {
-                return new BanksResponseDto { Message = "Error Has Occurred While Processing Your Request", Status = OperationStatus.ERROR };
+                return new BankResponseDtos { BankDtos = new List<Bank>(), Message = "Error Has Occurred While Processing Your Request", Status = OperationStatus.ERROR };
             }
         }
         public async Task<BankResponseDto> GetByIdAsync(long id)
@@ -96,11 +94,10 @@ namespace AjaxCleaningHCM.Core.MasterData.Service
             try
             {
                 var result = new BankResponseDto();
-                var product = await _productRepository.WhereAsync(x => x.Id == id && x.RecordStatus == RecordStatus.Active);
-                if (product == null)
+                var Bank = await _BankRepository.WhereAsync(x => x.Id == id && x.RecordStatus == RecordStatus.Active);
+                if (Bank == null)
                     return new BankResponseDto { Status = OperationStatus.ERROR, Message = "Record Does Not Exist" };
-                var productDTO = _mapper.Map<BankDto>(product.FirstOrDefault());
-                result.BankDto = productDTO;
+                result.BankDto = Bank.FirstOrDefault();
                 result.Status = OperationStatus.SUCCESS;
                 result.Message = "Operation Successfully Completed";
                 return result;
@@ -110,19 +107,23 @@ namespace AjaxCleaningHCM.Core.MasterData.Service
                 return new BankResponseDto { Message = "Error Has Occurred While Processing Your Request", Status = OperationStatus.ERROR };
             }
         }
-        public async Task<BankResponseDto> UpdateAsync(BankDto request)
+        public async Task<BankResponseDto> UpdateAsync(Bank request)
         {
-            var product = await _productRepository.FindAsync(request.Id);
-            if (product == null)
+            var Bank = await _BankRepository.FindAsync(request.Id);
+            if (Bank == null)
                 return new BankResponseDto() { Status = OperationStatus.ERROR, Message = "Record Does Not Exist" };
+            if ((Bank.Name != request.Name) && _BankRepository.ExistWhere(x => x.Name == request.Name && x.RecordStatus == RecordStatus.Active))
+                return new BankResponseDto { Message = "Record already exist with the same name", Status = OperationStatus.ERROR };
 
             try
             {
-                _mapper.Map(request, product);
-                product.UpdatedBy = _httpContextAccessor.HttpContext.Session.GetString("CurrentUsername");
-                product.LastUpdateDate = DateTime.UtcNow;
+                Bank.Name = request.Name;
+                Bank.Code = request.Code;
+                Bank.Description = request.Description;
+                Bank.UpdatedBy = _httpContextAccessor.HttpContext.User.Identity.Name;
+                Bank.LastUpdateDate = DateTime.UtcNow;
 
-                if (await _productRepository.UpdateAsync(product))
+                if (await _BankRepository.UpdateAsync(Bank))
                 {
                     return new BankResponseDto
                     {
@@ -149,4 +150,5 @@ namespace AjaxCleaningHCM.Core.MasterData.Service
             }
         }
     }
+
 }

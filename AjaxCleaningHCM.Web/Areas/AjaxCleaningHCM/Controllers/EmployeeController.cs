@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using System;
 using static AjaxCleaningHCM.Domain.Enums.Common;
 using Microsoft.AspNetCore.Authorization;
+using AjaxCleaningHCM.Domain.Models.MasterData;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq;
+using AjaxCleaningHCM.Core.Utils;
 
 namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
 {
@@ -14,11 +18,15 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
     public class EmployeeController : Controller
     {
         private readonly ILogger<EmployeeController> _logger;
-        private readonly IEmployee _product;
-        public EmployeeController(IEmployee product, ILogger<EmployeeController> logger)
+        private readonly IEmployee _Employee;
+        private readonly IBranch _branch;
+        private readonly IBank _bank;
+        public EmployeeController(IEmployee Employee, IBranch branch, IBank bank, ILogger<EmployeeController> logger)
         {
-            _product = product;
+            _Employee = Employee;
             _logger = logger;
+            _branch = branch;
+            _bank = bank;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -27,7 +35,7 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ActionName"] = "Index";
             try
             {
-                var products = await _product.GetAllAsync();
+                var Employees = await _Employee.GetAllAsync();
 
                 if (TempData["SuccessAlertMessage"] != null)
                 {
@@ -40,11 +48,11 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
                     ViewBag.FailureAlertMessage = TempData["FailureAlertMessage"];
                     TempData["FailureAlertMessage"] = null;
                 }
-                return View("Index", products);
+                return View("Index", Employees);
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error occurred while fetching all products.", ex);
+                _logger.LogError("Error occurred while fetching all Employees.", ex);
                 return View("Error");
             }
         }
@@ -55,18 +63,18 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ControllerName"] = "Employee";
             try
             {
-                var product = await _product.GetByIdAsync(id);
+                var Employee = await _Employee.GetByIdAsync(id);
 
-                if (product == null)
+                if (Employee == null)
                 {
                     return NotFound();
                 }
 
-                return View(product);
+                return View(Employee);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occurred while fetching product with ID {id}.", ex);
+                _logger.LogError($"Error occurred while fetching Employee with ID {id}.", ex);
                 return View("Error");
             }
         }
@@ -77,30 +85,44 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             ViewData["ControllerName"] = "Employee";
             try
             {
-                var product = await _product.GetByIdAsync(id);
+                var Employee = await _Employee.GetByIdAsync(id);
 
-                if (product == null)
+                if (Employee == null)
                 {
                     return NotFound();
                 }
+                var branchs = await _branch.GetAllAsync();
+                var branchList = new SelectList(branchs.BranchDtos, "Id", "Name").ToList();
+                branchList.Insert(0, new SelectListItem { Text = "Please select", Value = "" });
+                ViewBag.Branch = new SelectList(branchList, "Value", "Text", null);
+                ViewBag.SelectedBranch = string.Join(",", Employee.EmployeeDto.EmployeeBranches.Select(a => a.BranchId));
 
-                return PartialView(product.EmployeeDto);
+                var banks = await _bank.GetAllAsync();
+                var bankList = new SelectList(banks.BankDtos, "Id", "Name").ToList();
+                bankList.Insert(0, new SelectListItem { Text = "Please select", Value = "" });
+                ViewBag.Bank = new SelectList(bankList, "Value", "Text", null);
+                return PartialView(Employee.EmployeeDto);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occurred while fetching product with ID {id} for editing.", ex);
+                _logger.LogError($"Error occurred while fetching Employee with ID {id} for editing.", ex);
                 return View("Error"); // You can customize the error view
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(EmployeeDto request)
+        public async Task<IActionResult> Edit(Employee request)
         {
             ViewData["ControllerName"] = "Employee";
             try
             {
-                var result = await _product.UpdateAsync(request);
+                request.CirtificationImg = request.CirtificationImg ?? FileUploader.GetFormFileFromPath(@request.CirtificationPath);
+                request.EmployeeKebeleIDImg = request.EmployeeKebeleIDImg ?? FileUploader.GetFormFileFromPath(request.EmployeeKebeleIDPath);
+                request.EmpoloyePhotoImg = request.EmpoloyePhotoImg ?? FileUploader.GetFormFileFromPath(request.EmpoloyePhotoPath);
+                request.GuaranteeDocumentImg = request.GuaranteeDocumentImg ?? FileUploader.GetFormFileFromPath(request.GurrentDocumentPath);
+                request.GurrentKebeleIDImg = request.GurrentKebeleIDImg ?? FileUploader.GetFormFileFromPath(request.GurrentKebeleIDPath);
+                var result = await _Employee.UpdateAsync(request);
                 if (result.Status == OperationStatus.SUCCESS)
                 {
                     TempData["SuccessAlertMessage"] = "Employee successfully updated.";
@@ -110,35 +132,53 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
 
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Error occurred while updating product.");
-                    TempData["FailureAlertMessage"] = "Error occurred while updating product.";
+                    ModelState.AddModelError(string.Empty, "Error occurred while updating Employee. "+ result.Message);
+                    TempData["FailureAlertMessage"] = "Error occurred while updating Employee. " + result.Message;
+                    var branchs = await _branch.GetAllAsync();
+                    var branchList = new SelectList(branchs.BranchDtos, "Id", "Name").ToList();
+                    branchList.Insert(0, new SelectListItem { Text = "Please select", Value = "" });
+                    ViewBag.Branch = new SelectList(branchList, "Value", "Text", null);
 
+                    var banks = await _bank.GetAllAsync();
+                    var bankList = new SelectList(banks.BankDtos, "Id", "Name").ToList();
+                    bankList.Insert(0, new SelectListItem { Text = "Please select", Value = "" });
+                    ViewBag.Bank = new SelectList(bankList, "Value", "Text", null);
                     return View(request);
                 }
 
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error occurred while updating product.", ex);
+                _logger.LogError("Error occurred while updating Employee.", ex);
                 return View("Error");
             }
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             ViewData["ControllerName"] = "Employee";
+            var branchs = await _branch.GetAllAsync();
+            var branchList = new SelectList(branchs.BranchDtos, "Id", "Name").ToList();
+            branchList.Insert(0, new SelectListItem { Text = "Please select", Value = "" });
+            ViewBag.Branch = new SelectList(branchList, "Value", "Text", null);
+
+            var banks = await _bank.GetAllAsync();
+            var bankList = new SelectList(banks.BankDtos, "Id", "Name").ToList();
+            bankList.Insert(0, new SelectListItem { Text = "Please select", Value = "" });
+            ViewBag.Bank = new SelectList(bankList, "Value", "Text", null);
+
             return PartialView();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(EmployeeDto request)
+        public async Task<IActionResult> Create(Employee request)
         {
             ViewData["ControllerName"] = "Employee";
             try
             {
-                var result = await _product.CreateAsync(request);
+                var result = await _Employee.CreateAsync(request);
 
                 if (result.Status == OperationStatus.SUCCESS)
                 {
@@ -148,42 +188,116 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Error occurred while creating product.");
-                    TempData["FailureAlertMessage"] = "Error occurred while creating product.";
+                    ModelState.AddModelError(string.Empty, "Error occurred while creating Employee.");
+                    TempData["FailureAlertMessage"] = "Error occurred while creating Employee.";
+
+                    var branchs = await _branch.GetAllAsync();
+                    var branchList = new SelectList(branchs.BranchDtos, "Id", "Name").ToList();
+                    branchList.Insert(0, new SelectListItem { Text = "Please select", Value = "" });
+                    ViewBag.Branch = new SelectList(branchList, "Value", "Text", null);
+
+                    var banks = await _bank.GetAllAsync();
+                    var bankList = new SelectList(banks.BankDtos, "Id", "Name").ToList();
+                    bankList.Insert(0, new SelectListItem { Text = "Please select", Value = "" });
+                    ViewBag.Bank = new SelectList(bankList, "Value", "Text", null);
 
                     return View(request);
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error occurred while creating product.", ex);
+                _logger.LogError("Error occurred while creating Employee.", ex);
                 return View("Error");
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> Search(EmployeeSearchRequest EmployeeSearchRequest)
+        {
+            var filterdEmployee = await _Employee.Search(EmployeeSearchRequest);
+            return View("Index", filterdEmployee);
+        }
 
-        [HttpGet]
+        [HttpPost]
+
         public async Task<IActionResult> Delete(long id)
         {
             ViewData["ControllerName"] = "Employee";
             try
             {
-                var result = await _product.DeleteAsync(id);
+                var result = await _Employee.DeleteAsync(id);
                 if (result.Status == OperationStatus.SUCCESS)
                 {
-                    TempData["SuccessAlertMessage"] = "Employee successfully deleted.";
-                    return RedirectToAction("Index");
+                    return Json(new { success = true, message = "Employee successfully deleted." });
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Error occurred while deleteding product.");
-                    TempData["FailureAlertMessage"] = "Error occurred while deleteding product.";
-                    return RedirectToAction("Index");
+                    return Json(new { success = false, message = "Error occurred while deleting Employee." });
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error occurred while deleting product with ID {id}.", ex);
-                return View("Error");
+                _logger.LogError($"Error occurred while deleting Employee with ID {id}.", ex);
+                return Json(new { success = false, message = "An error occurred: " + ex.Message });
+            }
+        }
+        public ActionResult EmpoloyePhoto(string file)
+        {
+            try
+            {
+                return File(file, "application/jpg");
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+            }
+        }
+        public ActionResult Cirtification(string file)
+        {
+            try
+            {
+                return File(file, "application/pdf");
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+            }
+        }
+        public ActionResult EmployeeKebeleID(string file)
+        {
+            try
+            {
+                return File(file, "application/pdf");
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+            }
+        }
+        public ActionResult GurrentKebeleID(string file)
+        {
+            try
+            {
+                return File(file, "application/pdf");
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+            }
+        }
+        public ActionResult GurrentDocumnet(string file)
+        {
+            try
+            {
+                return File(file, "application/pdf");
+            }
+            catch (Exception ex)
+            {
+
+                return null;
             }
         }
     }
