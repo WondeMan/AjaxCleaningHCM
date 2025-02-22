@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AjaxCleaningHCM.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+38239e0ac126c6a8e38a6d09fc648144160bd6fd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d4803744c5909a33bb0f48771b94a09ad3525cae")]
 [assembly: System.Reflection.AssemblyProductAttribute("AjaxCleaningHCM.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AjaxCleaningHCM.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
