@@ -19,9 +19,4 @@
     <ProjectReference Include="..\AjaxCleaningHCM.Infrastructure\AjaxCleaningHCM.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Operational\Interface\" />
-    <Folder Include="Operational\Service\" />
-  </ItemGroup>
-
 </Project>

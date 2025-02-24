@@ -244,5 +244,19 @@ namespace AjaxCleaningHCM.Domain.Enums
             In = 1,
             Out
         }
+        public enum PayrollStatus
+        {
+            Pending,
+            Processed,
+            Paid
+        }
+
+        public enum PaymentMode
+        {
+            BankTransfer,
+            Cash,
+            Check
+        }
+
     }
 }
