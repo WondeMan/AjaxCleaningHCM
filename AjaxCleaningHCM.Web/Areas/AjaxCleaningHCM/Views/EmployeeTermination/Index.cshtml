@@ -8,6 +8,7 @@
     <thead>
         <tr>
             <th>Employee ID</th>
+            <th>Status</th>
             <th>Termination Date</th>
             <th>Reason</th>
             <th>Remark</th>
@@ -22,7 +23,8 @@
         @foreach (var item in Model.EmployeeTerminationDtos)
         {
             <tr>
-                <td>@item.EmployeeId</td>
+                <td>@item.Employee.EmployeeId</td>
+                <td>@item.EmployeeStatus</td>
                 <td>@item.TerminationDate.ToShortDateString()</td>
                 <td>@item.TerminationReason</td>
                 <td>@item.Remark</td>
@@ -36,19 +38,63 @@
                     @if (item.EmployeeStatus == EmployeeStatus.Terminated)
                     {
                         <span>|</span>
-                        <a href="#" class="text-dange" data-toggle="modal" data-target="#Rehire-@item.Id">
+                        <a href="#" class=" rehire-btn"
+                                data-employee-id="@item.EmployeeId"
+                                data-termination-id="@item.Id">
                             Rehire
                         </a>
                     }
-
                 </td>
                 <td>
                     <a asp-area="AjaxCleaningHCM" asp-controller="EmployeeTermination" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
                     <a asp-area="AjaxCleaningHCM" asp-controller="EmployeeTermination" asp-action="Details" asp-route-id="@item.Id" class=""><i class="fa text-info fa fa-book"></i> </a>
                     
-                    <a class="btn" onclick="deleteEntity('Bank','@item.Id')"><i class="fas fa-trash text-danger"></i></a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".rehire-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                let employeeId = this.getAttribute("data-employee-id");
+                let terminationId = this.getAttribute("data-termination-id");
+
+                rehireEmployee(employeeId, terminationId);
+            });
+        });
+    });
+
+    function rehireEmployee(employeeId, terminationId) {
+        Swal.fire({
+            title: "Rehire Employee",
+            text: "Are you sure you want to rehire the employee?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, Rehire!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.post("/AjaxCleaningHCM/EmployeeTermination/Rehire", { employeeId, terminationId })
+                    .done(response => {
+                        if (response.success) {
+                            Swal.fire({
+                                title: "Rehired!",
+                                text: "Employee has been rehired.",
+                                icon: "success",
+                                timer: 3000,
+                                showConfirmButton: false
+                            }).then(() => location.reload());
+                        } else {
+                            Swal.fire("Error!", response.message || "Failed to rehire employee.", "error");
+                        }
+                    })
+                    .fail(xhr => {
+                        Swal.fire("Error!", "Failed to rehire employee. " + xhr.responseText, "error");
+                    });
+            }
+        });
+    }
+</script>

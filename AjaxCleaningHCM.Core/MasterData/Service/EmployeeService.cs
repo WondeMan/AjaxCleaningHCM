@@ -252,6 +252,25 @@ namespace AjaxCleaningHCM.Core.MasterData.Service
                 };
             }
         }
+        public async Task<EmployeeResponseDto> UpdateEmployeeStatusAsync(Employee request)
+        {
+            if (await _EmployeeRepository.UpdateAsync(request))
+            {
+                return new EmployeeResponseDto
+                {
+                    Message = "Operation Successfully Completed",
+                    Status = OperationStatus.SUCCESS
+                };
+            }
+            else
+            {
+                return new EmployeeResponseDto
+                {
+                    Message = "Error Has Occurred While Processing Your Request",
+                    Status = OperationStatus.ERROR
+                };
+            }
+        }
         public async Task<EmployeeResponseDto> UpdateAsync(Employee request)
         {
             var existingEmployee = await _EmployeeRepository.Where(a => a.Id == request.Id, "EmployeeBranches.Branch").FirstOrDefaultAsync();

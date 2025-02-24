@@ -199,12 +199,13 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
                 return Json(new { success = false, message = "An error occurred: " + ex.Message });
             }
         }
+        [HttpPost]
         public async Task<ActionResult> Rehire(long employeeId, long terminationId)
         {
             var employee =await _Employee.GetByIdAsync(employeeId);
-            var termination =await _EmployeeTermination.GetByEmplyeeId(terminationId);
+            var termination =await _EmployeeTermination.GetByEmplyeeId(employeeId);
 
-            if (employee == null || termination == null)
+            if (employee.EmployeeDto == null || termination.EmployeeTerminationDto == null)
             {
                 TempData["ErrorAlertMessage"] = "Employee or termination record not found.";
                 return RedirectToAction("Index");
@@ -213,17 +214,16 @@ namespace AjaxCleaningHCM.Web.Areas.AjaxCleaningHCM.Controllers
             employee.EmployeeDto.LastUpdateDate = DateTime.Now;
             termination.EmployeeTerminationDto.LastUpdateDate= DateTime.Now;
             termination.EmployeeTerminationDto.EmployeeStatus= EmployeeStatus.Rehire;
-            var updateEmployee = await _Employee.UpdateAsync(employee.EmployeeDto);
+            var updateEmployee = await _Employee.UpdateEmployeeStatusAsync(employee.EmployeeDto);
             var updateEmployeeTermination = await _EmployeeTermination.UpdateAsync(termination.EmployeeTerminationDto);
           if (updateEmployee.Status == OperationStatus.SUCCESS && updateEmployeeTermination.Status==OperationStatus.SUCCESS)
             {
-                TempData["AlertMessage"] = "Employee has been successfully rehired!";
+                return Json(new { success = true, message = "Employee has been successfully rehired!" });
             }
             else
             {
-                TempData["AlertMessage"] = "An error occurred while rehiring the employee.";
+                return Json(new { success = false, message = "An error occurred while rehiring the employee." });
             }
-            return RedirectToAction("Index");
         }
         public async Task<ActionResult> TerminationLetter(int id)
         {
