@@ -5,6 +5,8 @@ using AjaxCleaningHCM.Core.MasterData.Service;
 using AjaxCleaningHCM.Domain.Models.MasterData;
 using AjaxCleaningHCM.Core.Helper.Interface;
 using AjaxCleaningHCM.Core.Helper.Service;
+using AjaxCleaningHCM.Core.Operational.Interface;
+using AjaxCleaningHCM.Core.Operational.Service;
 
 namespace AjaxCleaningHCM.Web.Installer
 {
@@ -23,6 +25,7 @@ namespace AjaxCleaningHCM.Web.Installer
 
             services.AddScoped<IEmployeeTermination, EmployeeTerminationService>();
 
+            services.AddScoped<IPayrollService, PayrollService>();
 
         }
     }

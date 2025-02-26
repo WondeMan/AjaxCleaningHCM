@@ -24,5 +24,6 @@ namespace AjaxCleaningHCM.Core.MasterData.Interface
         OperationStatus ActivateEmployee(long id);
         Task<EmployeeResponseDtos> Search(EmployeeSearchRequest EmployeeSearchRequest);
         Task<EmployeeResponseDto> UpdateEmployeeStatusAsync(Employee request);
+        Task<EmployeeResponseDtos> GetBulkEmployeeByIdAsync(List<long> employeeIds);
     }
 }

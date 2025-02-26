@@ -126,6 +126,25 @@ namespace AjaxCleaningHCM.Core.MasterData.Service
                 return new EmployeeResponseDtos { Message = "Error Has Occurred While Processing Your Request", Status = OperationStatus.ERROR };
             }
         }
+        public async Task<EmployeeResponseDtos> GetBulkEmployeeByIdAsync(List<long> employeeIds)
+        {
+            try
+            {
+
+                var result = new EmployeeResponseDtos();
+                var EmployeeResponses = await _EmployeeRepository.WhereAsync(a => a.RecordStatus == RecordStatus.Active && employeeIds.Contains(a.Id), "EmployeeBranches.Branch");
+                var EmployeeDTOs = new List<EmployeeResponseDtos>();
+                result.Status = OperationStatus.SUCCESS;
+                result.Message = "Operation Successfully Completed";
+                result.EmployeeDtos = EmployeeResponses.ToList();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new EmployeeResponseDtos { Message = "Error Has Occurred While Processing Your Request", Status = OperationStatus.ERROR };
+            }
+        }
+
         public async Task<EmployeeResponseDto> GetByIdAsync(long id)
         {
             try

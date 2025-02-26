@@ -20,7 +20,6 @@ namespace AjaxCleaningHCM.Infrastructure.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<MenuBuilder> MenuBuilders { get; set; }
         public DbSet<EmployeeTermination> EmployeeTerminations { get; set; }
-
-
+        public DbSet<Payroll> Payrolls { get; set; }
     }
 }

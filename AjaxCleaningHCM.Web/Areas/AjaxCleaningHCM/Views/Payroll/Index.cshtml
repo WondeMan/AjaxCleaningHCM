@@ -1,0 +1,82 @@
+﻿@model AjaxCleaningHCM.Domain.DTO.MasterData.Response.PayrollResponseDtos
+@{
+    Layout = "_Default";
+}
+<div class="table-responsive">
+    <div class="card p-3">
+        <form asp-action="Search" asp-controller="Payroll" asp-area="AjaxCleaningHCM">
+           <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.Label(null, "Search By Month", new { @class = "control-label" })
+                        <input class="form-control" name="Month" type="month" value="@DateTime.Now.ToString("yyyy-MM")" />
+                    </div>
+                </div>
+                <div class="col-md-4" style="margin-top:5px;">
+                    <div class="form-group mt-4" >
+                        <button type="submit" class="btn btn-success">Search</button>
+                    </div>
+                </div>
+           </div>
+        </form>
+        <h5>Summary</h5>
+        <table class="table table-bordered mt-2">
+            <tbody>
+                <tr>
+                    <th>Total Employees</th>
+                    <td>@Model.PayrollDtos.Count()</td>
+                </tr>
+                <tr>
+                    <th>Total Basic Salary</th>
+                    <td>@Model.PayrollDtos.Sum(p => p.BasicSalary).ToString("C")</td>
+                </tr>
+                <tr>
+                    <th>Total Allowances</th>
+                    <td>@Model.PayrollDtos.Sum(p => p.Allowances).ToString("C")</td>
+                </tr>
+                <tr>
+                    <th>Total Deductions</th>
+                    <td>@Model.PayrollDtos.Sum(p => p.Deductions).ToString("C")</td>
+                </tr>
+                <tr>
+                    <th>Total Net Salary</th>
+                    <td>@Model.PayrollDtos.Sum(p => p.NetSalary).ToString("C")</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <table id="table" class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Employee Id</th>
+                <th>Employee Name</th>
+                <th>Basic Salary</th>
+                <th>Allowances</th>
+                <th>Deductions</th>
+                <th>Net Salary</th>
+                <th>Payment Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var payroll in Model.PayrollDtos)
+            {
+                <tr>
+                    <td>@payroll.Employee.EmployeeId</td>
+                    <td>@payroll.Employee.FullName</td>
+                    <td>@payroll.BasicSalary.ToString("C")</td>
+                    <td>@payroll.Allowances.ToString("C")</td>
+                    <td>@payroll.Deductions.ToString("C")</td>
+                    <td>@payroll.NetSalary.ToString("C")</td>
+                    <td>@payroll.PaymentDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        <a class="btn" onclick="deleteEntity('Payroll','@payroll.Id')">
+                            <i class="fas fa-trash text-danger"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

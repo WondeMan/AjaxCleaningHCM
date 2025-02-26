@@ -27,6 +27,7 @@ namespace AjaxCleaningHCM.Web.Installer
             services.AddScoped<IRepositoryBase<EmployeeHistory>, RepositoryBase<EmployeeHistory>>();
             services.AddScoped<IRepositoryBase<Product>, RepositoryBase<Product>>();
             services.AddScoped<IRepositoryBase<EmployeeTermination>, RepositoryBase<EmployeeTermination>>();
+            services.AddScoped<IRepositoryBase<Payroll>, RepositoryBase<Payroll>>();
 
 
 
