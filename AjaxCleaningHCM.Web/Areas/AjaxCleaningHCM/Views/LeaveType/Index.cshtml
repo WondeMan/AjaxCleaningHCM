@@ -1,0 +1,35 @@
+﻿@model AjaxCleaningHCM.Domain.DTO.MasterData.Response.LeaveTypeResponseDtos
+@{
+    Layout = "_Default";
+}
+
+<div class="table-responsive">
+    <table id="table" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Number of Days</th>
+            <th>Leave Day Type</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.LeaveTypeDtos)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Code</td>
+                <td>@item.NumberOfDay</td>
+                <td>@item.LeaveDayType</td>
+                <td>
+                        <div class="action-icons">
+                            <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit text-info"></i></a> |
+                            <a class="btn" onclick="deleteEntity('LeaveType','@item.Id')"><i class="fas fa-trash text-danger"></i></a>
+                        </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>

@@ -1,0 +1,26 @@
+﻿@using static AjaxCleaningHCM.Domain.Enums.Common
+@model AjaxCleaningHCM.Domain.Models.MasterData.LeaveType
+@{
+    Layout = "_Default";
+}
+<!-- Edit View -->
+<form asp-area="AjaxCleaningHCM" asp-controller="LeaveType" asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Code" class="control-label"></label>
+        <input asp-for="Code" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="NumberOfDay" class="control-label"></label>
+        <input asp-for="NumberOfDay" class="form-control" type="number" />
+    </div>
+    <div class="form-group">
+        <label asp-for="LeaveDayType" class="control-label"></label>
+        <select asp-for="LeaveDayType" asp-items="Html.GetEnumSelectList<LeaveDayType>()" class="form-control"></select>
+    </div>
+    <button type="submit" class="btn btn-success">Save</button>
+</form>
