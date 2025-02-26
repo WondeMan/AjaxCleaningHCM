@@ -1,0 +1,39 @@
+﻿@model AjaxCleaningHCM.Domain.DTO.MasterData.Response.EmployeeDisciplineResponseDtos
+
+@{
+    Layout = "_Default";
+}
+<div class="table-responsive">
+<table id="table" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Employee Id</th>
+            <th>Employee</th>
+            <th>Discipline Category</th>
+            <th>Action Taken</th>
+            <th>Action Taken Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.EmployeeDisciplineDtos)
+        {
+            <tr>
+                <td>@item.Employee.EmployeeId</td>
+                <td>@item.Employee.FullName</td>
+                <td>@item.DisciplineCategory.Name</td>
+                <td>@item.ActionTaken</td>
+                <td>@item.ActionTakenDate.ToShortDateString()</td>
+                <td>
+                    <div class="action-icons">
+                        <a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-eye text-info"></i></a>
+                        <span>|</span>
+                        <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit text-info"></i></a> |
+                        <a class="btn" onclick="deleteEntity('EmployeeDiscipline','@item.Id')"><i class="fas fa-trash text-danger"></i></a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>

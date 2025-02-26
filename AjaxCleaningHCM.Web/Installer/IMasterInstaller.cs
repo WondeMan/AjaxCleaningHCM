@@ -16,18 +16,13 @@ namespace AjaxCleaningHCM.Web.Installer
         {
             services.AddScoped<IProduct,ProductService>();
             services.AddScoped<IMenuBuilder, MenuBuilderService>();
-
             services.AddScoped<IBank, BankService>();
-
             services.AddScoped<IEmployee, EmployeeService>();
-
             services.AddScoped<IBranch, BranchService>();
-
             services.AddScoped<IEmployeeTermination, EmployeeTerminationService>();
-
             services.AddScoped<IPayrollService, PayrollService>();
             services.AddScoped<IDisciplineCategory, DisciplineCategoryService>();
-
+            services.AddScoped<IEmployeeDiscipline, EmployeeDisciplineService>();
         }
     }
 }

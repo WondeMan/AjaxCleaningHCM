@@ -1,0 +1,17 @@
+﻿@model AjaxCleaningHCM.Domain.DTO.MasterData.Response.EmployeeDisciplineResponseDto
+@{
+    Layout = "_Default";
+}
+
+<h2>Employee Discipline Details</h2>
+
+<div class="card">
+    <div class="card-body">
+        <p class="card-text"><strong>Full Name:</strong> @Model.EmployeeDisciplineDto.Employee.FullName</p>
+        <p class="card-text"><strong>Employee Id:</strong> @Model.EmployeeDisciplineDto.Employee.EmployeeId</p>
+        <p class="card-text"><strong>Discipline Category:</strong> @Model.EmployeeDisciplineDto.DisciplineCategory.Name</p>
+        <p class="card-text"><strong>Description:</strong> @Model.EmployeeDisciplineDto.Description</p>
+        <p class="card-text"><strong>Action Taken:</strong> @Model.EmployeeDisciplineDto.ActionTaken</p>
+        <p class="card-text"><strong>Action Taken Date:</strong> @Model.EmployeeDisciplineDto.ActionTakenDate.ToShortDateString()</p>
+    </div>
+</div>
