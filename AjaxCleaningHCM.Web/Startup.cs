@@ -21,6 +21,7 @@ using AjaxCleaningHCM.Web.Installer;
 using AjaxCleaningHCM.Core.Helper.Utils;
 using AjaxCleaningHCM.Core.Helper.Interface;
 using System.Reflection;
+using AjaxCleaningHCM.Infrastructure.Data.InitialSeed;
 
 namespace AjaxCleaningHCM
 {
@@ -118,7 +119,11 @@ namespace AjaxCleaningHCM
                 var controllerCollector = services.GetRequiredService<IRegisterPreviliege>();
                 var assembly = Assembly.GetExecutingAssembly();
                 controllerCollector.RegisterPrivileges(assembly);
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+                MasterDataSeeder.Seed(context);
             }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

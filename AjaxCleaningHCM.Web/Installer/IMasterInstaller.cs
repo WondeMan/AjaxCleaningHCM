@@ -26,6 +26,7 @@ namespace AjaxCleaningHCM.Web.Installer
             services.AddScoped<IEmployeeTermination, EmployeeTerminationService>();
 
             services.AddScoped<IPayrollService, PayrollService>();
+            services.AddScoped<IDisciplineCategory, DisciplineCategoryService>();
 
         }
     }
