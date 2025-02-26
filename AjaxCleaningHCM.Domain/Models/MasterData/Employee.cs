@@ -61,7 +61,8 @@ namespace AjaxCleaningHCM.Domain.Models.MasterData
         public string BankAccountNumber { get; set; }
         [ForeignKey("Bank"), Display(Name = "Bank")]
         public long? BankId { get; set; }
-
+        public decimal MaximumCredit { get; set; }
+        public int NumberOfVacation { get; set; }
         [NotMapped]
         [AllowedExtensions(new string[] { ".jpg", ".jpeg", ".png", ".pdf", ".doc", ".docx", ".gif" })]
         [Required]

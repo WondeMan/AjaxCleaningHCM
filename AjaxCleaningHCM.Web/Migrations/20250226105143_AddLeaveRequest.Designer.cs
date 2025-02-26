@@ -4,14 +4,16 @@ using AjaxCleaningHCM.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AjaxCleaningHCM.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250226105143_AddLeaveRequest")]
+    partial class AddLeaveRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -642,18 +644,12 @@ namespace AjaxCleaningHCM.Web.Migrations
                     b.Property<DateTime>("LastUpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("MaximumCredit")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("MiddleName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("MonthlySalary")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("NumberOfVacation")
-                        .HasColumnType("int");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()

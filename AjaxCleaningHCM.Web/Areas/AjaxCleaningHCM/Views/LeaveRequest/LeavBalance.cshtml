@@ -1,0 +1,164 @@
+﻿
+@model AjaxCleaningHCM.Domain.DTO.MasterData.Response.LeaveRequestResponseDtos
+@{
+    Layout = "_Default";
+}
+<h1>dfasdf</h1>
+<div class="card-body">
+    <div class="col-sm-12 col-md-12 col-lg-12 ">
+        <form method="post" asp-controller="LeaveRequest" asp-action="GetLeavBalanceByDate">
+            <div class="row">
+
+                <div class="form-group col-sm-12 col-md-2 col-lg-2 col-xs-2 col-xl-2 col-2">
+                    <label>Employee Id</label>
+                    <input type="text" class="form-control" name="EmployeeId" minViewMode="months">
+                </div>
+                <div class="form-group col-sm-12 col-md-2 col-lg-2 col-xs-2 col-xl-2 col-2 ">
+                    <label>Year</label>
+                    <input type="number" class="form-control" name="year" minViewMode="year">
+                </div>
+                <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xs-3 col-xl-3 col-3">
+                    <label>Start Date</label>
+                    <input type="date" class="form-control" name="startDate" minViewMode="months">
+                </div>
+                <div class="form-group col-sm-12 col-md-3 col-lg-3 col-xs-3 col-xl-3 col-3">
+                    <label>End Date</label>
+                    <input type="date" class="form-control" name="endDate" minViewMode="months">
+                </div>
+
+
+                <div class="form-group col-sm-12 col-md-2 col-lg-2 col-xs-2 col-xl-2 col-2">
+                    <br />
+                    <button id="search-by-agent" class="btn btn-success search form-control mt-2 p-2" type="submit"><i class="fa fa-search"> </i> Search </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped" id="table">
+        <thead>
+            <tr>
+
+                <th>
+                    Employee ID dfsd
+                </th> 
+                <th>
+                    Full Name
+                </th>
+                <th>
+                    Allowed Days
+                </th>
+                <th>
+                    Remaining
+                </th>
+                <th>
+                    LeaveType
+                </th>
+                <th>
+                    Year
+                </th>
+                <th>Number Of Working Day</th>
+                <th>Number Of Holiday Day</th>
+                <th>Total Leave Day</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var items in Model.LeaveRequestDtos.GroupBy(a => a.EmployeeId))
+            {
+
+                foreach (var item in items)
+                {
+
+                    if (item.Remark == "BalanceGenerated")
+                    {
+                        <tr>
+                            <td>
+                                @items.FirstOrDefault().Employee.EmployeeId
+                            </td>
+                            <td>
+                                @items.FirstOrDefault().Employee.FullName
+
+                            </td>
+                            <td>
+                                @item.AllowedDay
+                            </td>
+                            <td>
+                                @item.RemainingDay
+
+                            </td>
+                            <td>
+                                Not leave yet
+                            </td>
+                            <td>
+                                Not leave yet
+                            </td>
+                            <td>
+                                Not leave yet
+                            </td>
+                            <td>
+                                Not leave yet
+                            </td>
+                            <td>
+                                Not leave yet
+                            </td>
+                            <td>
+                                Not leave yet
+                            </td>
+                            <td>
+                                Not leave yet
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Employee.EmployeeId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Employee.FullName)
+                            </td>
+                            <td>
+                                @item.AllowedDay
+                            </td>
+                            <td>
+                                @item.RemainingDay
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LeaveType.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Year)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NumberOfWorkingDay)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NumberOfHolidayDay)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TotalLeaveDay)
+                            </td>
+                            <td>
+                                @item.StartDate.ToShortDateString()
+                            </td>
+                            <td>
+                                @item.EndDate.ToShortDateString()
+                            </td>
+
+
+                        </tr>
+                    }
+
+                }
+            }
+
+        </tbody>
+    </table>
+</div>

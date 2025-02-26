@@ -24,6 +24,7 @@ namespace AjaxCleaningHCM.Web.Installer
             services.AddScoped<IDisciplineCategory, DisciplineCategoryService>();
             services.AddScoped<IEmployeeDiscipline, EmployeeDisciplineService>();
             services.AddScoped<ILeaveType, LeaveTypeService>();
+            services.AddScoped<ILeaveRequest, LeaveRequestService>();
 
         }
     }
