@@ -1,0 +1,72 @@
+﻿@model AjaxCleaningHCM.Domain.Models.MasterData.IssueRegistration
+@{
+    Layout = "_Default";
+}
+
+<form asp-action="IssueProcessing">
+    <div class="row p-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <!-- Subject Field -->
+        <div class="form-group col-md-4">
+            <label class="control-label">Subject</label>
+            <input asp-for="Subject" class="form-control" />
+            <span asp-validation-for="Subject" class="text-danger"></span>
+        </div>
+
+        <!-- Priority Dropdown -->
+        <div class="form-group col-md-4">
+            <label class="control-label">Priority</label>
+            <select asp-for="Priority" class="form-control">
+                <option selected value="@Model.Priority">@Model.Priority</option>
+                <option value="1">High</option>
+                <option value="2">Medium</option>
+                <option value="3">Low</option>
+            </select>
+            <span asp-validation-for="Priority" class="text-danger"></span>
+        </div>
+
+        <!-- Status Dropdown -->
+        <div class="form-group col-md-4">
+            <label class="control-label">Status</label>
+            <select asp-for="Status" class="form-control">
+                <option selected value="@Model.Status">@Model.Status</option>
+                <option value="1">New</option>
+                <option value="2">In Progress</option>
+                <option value="3">Closed</option>
+            </select>
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+
+        <!-- Issue Detail -->
+        <div class="form-group col-12">
+            <label class="control-label">Issue Detail</label>
+            <textarea asp-for="IssueDetail" class="form-control"></textarea>
+            <span asp-validation-for="IssueDetail" class="text-danger"></span>
+        </div>
+
+        <!-- Action Taken Remark -->
+        <div class="form-group col-12">
+            <label class="control-label">Action Taken Remark</label>
+            <textarea asp-for="ActionTakenRemark" class="form-control"></textarea>
+            <span asp-validation-for="ActionTakenRemark" class="text-danger"></span>
+        </div>
+
+        <!-- Attachment Link -->
+        @if (!string.IsNullOrEmpty(Model.AttachmentPath))
+        {
+            <div class="form-group col-12">
+                <label class="control-label">Attachment</label>
+                <p><a href="@Model.AttachmentPath" target="_blank">View Attachment</a></p>
+            </div>
+        }
+    </div>
+
+    <!-- Submit Button -->
+    <div class="row px-4">
+        <div class="col-md-2">
+            <input type="hidden" asp-for="Id" />
+            <button id="submit" class="btn btn-success mt-4" type="submit">Save</button>
+        </div>
+    </div>
+</form>

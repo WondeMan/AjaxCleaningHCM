@@ -1,0 +1,55 @@
+﻿@model AjaxCleaningHCM.Domain.DTO.MasterData.Response.IssueRegistrationResponseDtos
+
+@{
+    Layout = "_Default";
+}
+
+<div class="table-responsive">
+    <table id="table" class="table table-striped">
+        <thead>
+            <tr>
+                <th>No</th>
+
+                <th>@Html.DisplayNameFor(model => model.IssueRegistrationDtos.FirstOrDefault().BranchId)</th>
+                <th>@Html.DisplayNameFor(model => model.IssueRegistrationDtos.FirstOrDefault().Subject)</th>
+                <th>@Html.DisplayNameFor(model => model.IssueRegistrationDtos.FirstOrDefault().IssueDetail)</th>
+                <th>@Html.DisplayNameFor(model => model.IssueRegistrationDtos.FirstOrDefault().Priority)</th>
+                <th>@Html.DisplayNameFor(model => model.IssueRegistrationDtos.FirstOrDefault().Status)</th>
+                <th>@Html.DisplayNameFor(model => model.IssueRegistrationDtos.FirstOrDefault().ActionTakenBy)</th>
+                <th>@Html.DisplayNameFor(model => model.IssueRegistrationDtos.FirstOrDefault().ActionTakenDate)</th>
+                <th>@Html.DisplayNameFor(model => model.IssueRegistrationDtos.FirstOrDefault().ActionTakenRemark)</th>
+                <th>@Html.DisplayNameFor(model => model.IssueRegistrationDtos.FirstOrDefault().Attachment)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int index = 0;
+            }
+            @foreach (var item in Model?.IssueRegistrationDtos?.ToList())
+            {
+                index++;
+                <tr>
+                    <td>@index</td>
+                    <td>@Html.DisplayFor(modelItem => item.BranchId)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Subject)</td>
+                    <td>@Html.DisplayFor(modelItem => item.IssueDetail)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Priority)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ActionTakenBy)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ActionTakenDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ActionTakenRemark)</td>
+                    <td> <a  href="@item.AttachmentPath">Attachment</a></td>
+                    <td>
+                        <div class="action-icons">
+                            <a asp-action="IssueProcessing" asp-route-id="@item.Id"><i class="fas fa-check text-check"></i></a> |
+
+                            <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit text-info"></i></a> |
+                            <a class="btn" onclick="deleteEntity('IssueRegistration','@item.Id')"><i class="fas fa-trash text-danger"></i></a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

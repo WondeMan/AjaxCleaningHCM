@@ -32,7 +32,7 @@ namespace AjaxCleaningHCM.Web.Installer
             services.AddScoped<IRepositoryBase<EmployeeDiscipline>, RepositoryBase<EmployeeDiscipline>>();
             services.AddScoped<IRepositoryBase<LeaveType>, RepositoryBase<LeaveType>>();
             services.AddScoped<IRepositoryBase<LeaveRequest>, RepositoryBase<LeaveRequest>>();
-
+            services.AddScoped<IRepositoryBase<IssueRegistration>, RepositoryBase<IssueRegistration>>(); 
 
 
 

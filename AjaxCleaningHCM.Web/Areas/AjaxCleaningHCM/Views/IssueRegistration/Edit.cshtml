@@ -1,0 +1,55 @@
+﻿@model AjaxCleaningHCM.Domain.Models.MasterData.IssueRegistration
+@{
+    Layout = "_Default";
+}
+<form asp-area="AjaxCleaningHCM" asp-controller="IssueRegistration" asp-action="Edit" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row p-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group col-sm-12 col-md-4 col-lg-3 col-xs-3 col-xl-3 col-3">
+            <label class="control-label">Branch</label>
+            <select style="width: 100%;" asp-for="BranchId" required class="form-control select2" asp-items="ViewBag.Branchs">
+            </select>
+            <span asp-validation-for="BranchId" class="text-danger"></span>
+        </div>
+        <div class="form-group col-sm-12 col-md-4 col-lg-3 col-xs-3 col-xl-3 col-3">
+            <label class="control-label"> Subject</label>
+            <input asp-for="@Model.Subject" name="Subject" class="form-control" />
+            <span asp-validation-for="@Model.Subject" class="text-danger"></span>
+        </div>
+
+
+        <div class="form-group col-sm-12 col-md-4 col-lg-3 col-xs-3 col-xl-3 col-3">
+            <label class="control-label"> Priority</label>
+            <select asp-for="Priority" id="Priority" class="form-control" name="Priority">
+                <option  value="3">Low</option>
+                <option value="1">High</option>
+                <option value="2">Medium</option>
+
+            </select>
+            <span asp-validation-for="@Model.Priority" class="text-danger"></span>
+        </div>
+        <div class="form-group col-sm-12 col-md-9 col-lg-9 col-xs-9 col-xl-9 col-9">
+            <label class="control-label"> Issue Detail</label>
+            <textarea asp-for="@Model.IssueDetail" name="IssueDetail" class="form-control">
+
+                                        </textarea>
+
+            <span asp-validation-for="@Model.IssueDetail" class="text-danger"></span>
+        </div>
+        <div class="form-group col-sm-12 col-md-4 col-lg-4 col-xs-4 col-xl-4 col-4">
+            <label class="control-label">Attachment</label>
+            <input id="Attachment" class="custome-input" type="file" accept=" image/png, image/gif, image/jpeg" name="Attachment" />
+            <span asp-validation-for="Attachment" class="text-danger"></span>
+        </div>
+
+        <div class="row">
+            <div class="form-group pl-2">
+                <input type="number" asp-for="Id" hidden />
+                <button type="submit" role="button" class="btn btn-primary">Update</button>
+            </div>
+        </div>
+</form>
+
+
+

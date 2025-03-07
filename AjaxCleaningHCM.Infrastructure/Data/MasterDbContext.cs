@@ -25,7 +25,6 @@ namespace AjaxCleaningHCM.Infrastructure.Data
         public DbSet<EmployeeDiscipline> EmployeeDisciplines { get; set; }
         public DbSet<LeaveType> LeaveTypes { get; set; }
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
-
-
+        public DbSet<IssueRegistration> IssueRegistrations { get; set; }
     }
 }
